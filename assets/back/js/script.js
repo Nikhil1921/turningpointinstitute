@@ -165,7 +165,7 @@ $(document).ready(function() {
                 swal({
                         title: result.status ? "Success" : "Error",
                         text: result.message,
-                        type: result.status ? "success" : "danger",
+                        type: result.status ? "success" : "error",
                         confirmButtonClass: "btn btn-outline-danger",
                         confirmButtonText: "OK"
                     },

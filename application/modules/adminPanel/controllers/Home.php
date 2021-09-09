@@ -96,6 +96,38 @@ class Home extends Admin_Controller {
             return TRUE;
     }
 
+    public function query()
+    {   
+        if (!$this->input->is_ajax_request()) {
+            $data['name'] = 'query';
+            $data['title'] = 'query';
+            $data['url'] = $this->redirect;
+
+            return $this->template->load('template', 'query', $data);
+        }else{
+    		$this->form_validation->set_rules('query', '', 'required');
+            if ($this->form_validation->run() == FALSE)
+                $response = [
+                    'message' => "Some required fields are missing.",
+                    'status' => false
+                ];
+            else{
+                if ($this->main->run_query())
+                	$response = [
+                        'message' => "Query run successfully.",
+                        'status' => true
+                    ];
+                else
+                    $response = [
+                        'message' => "Query not run. Try again.",
+                        'status' => false
+                    ];
+            }
+            
+            die(json_encode($response));
+        }
+    }
+
     protected $validate = [
         [
             'field' => 'name',

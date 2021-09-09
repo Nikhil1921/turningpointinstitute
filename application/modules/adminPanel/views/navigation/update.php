@@ -16,7 +16,7 @@
 			<?= form_input('icon', $data['icon'], 'class="form-control form-control-round" id="icon" placeholder="Menu icon"') ?>
 		</div>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-3">
 		<div class="form-group">
 			<?= form_button([ 'content' => 'Add Sub Menu',
 			'type'    => 'button',

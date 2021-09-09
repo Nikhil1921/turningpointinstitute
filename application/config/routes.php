@@ -15,3 +15,5 @@ $route[ADMIN.'/banner']['post'] = ADMIN.'/banner/get';
 $route[ADMIN.'/ebook']['post'] = ADMIN.'/ebook/get';
 $route[ADMIN.'/student']['post'] = ADMIN.'/student/get';
 $route[ADMIN.'/question']['post'] = ADMIN.'/question/get';
+$route[ADMIN.'/purchase']['post'] = ADMIN.'/purchase/get';
+$route[ADMIN.'/membership']['post'] = ADMIN.'/membership/get';

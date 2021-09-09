@@ -129,4 +129,50 @@ class Home extends Public_controller  {
             echoResponse(400, $response);
 		}
 	}
+
+	public function buy_ebook()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['name', 'address', 'pincode', 'mobile', 'city', 'book_id']);
+		
+		$book = $this->main->get('ebook', '(price * (100 - discount) / 100) price, del_charge', ['id' => $this->input->post('book_id')]);
+		
+		$post = [
+					'mobile'  	 => $this->input->post('mobile'),
+					'name'    	 => $this->input->post('name'),
+					'address' 	 => $this->input->post('address'),
+					'pincode' 	 => $this->input->post('pincode'),
+					'city'    	 => $this->input->post('city'),
+					'book_id' 	 => $this->input->post('book_id'),
+					'price'	  	 => $book['price'],
+					'del_charge' => $book['del_charge'],
+					'u_id'    	 => $api
+                ];
+
+		if ($row = $this->main->add($post, 'buy_ebook')) {
+			$response["valid"] = true;
+            $response['message'] = "Buy ebook successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Buy ebook not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function membership_list()
+	{
+		get();
+		if ($row = $this->api->membership_list()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Membership list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Membership list not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
 }

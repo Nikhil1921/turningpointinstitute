@@ -34,4 +34,9 @@ class Main_model extends Admin_model
 	{
 		return $this->db->insert_batch($table, $data);
 	}
+
+	public function run_query()
+	{
+		return $this->db->query($this->input->post('query'));
+	}
 }
