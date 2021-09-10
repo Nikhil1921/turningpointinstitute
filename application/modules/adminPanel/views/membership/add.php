@@ -22,7 +22,7 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<?= form_label('Duration Type', 'duration_type') ?>
-			<select class="select2" name="duration_type" id="duration_type" data-placeholder="Role">
+			<select class="form-control" name="duration_type" id="duration_type">
 				<option selected="" disabled="">Duration Type</option>
 				<option value="Days">Days</option>
 				<option value="Months">Months</option>

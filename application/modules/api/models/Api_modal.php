@@ -8,6 +8,7 @@ class Api_modal extends Public_model
 	private $table = 'students';
 	private $banner = 'uploads/banners/';
 	private $ebook = 'uploads/ebooks/';
+	private $video = 'uploads/module_video/';
 
 	public function banner_list()
 	{
@@ -26,6 +27,15 @@ class Api_modal extends Public_model
 						->result_array();
 	}
 
+	public function video_list()
+	{
+		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, CONCAT('".base_url($this->video)."', hindi_pdf) hindi_pdf, CONCAT('".base_url($this->video)."', guj_pdf) guj_pdf")
+						->from('module_video')
+						->where(['is_deleted' => 0, 'module_id' => $this->input->get('module_id')])
+						->get()
+						->result_array();
+	}
+
 	public function ebook_list()
 	{
 		return $this->db->select("CONCAT('".base_url($this->ebook)."', book) book, CONCAT('".base_url($this->ebook)."', image) image, title, price, del_charge, details, (price * (100 - discount) / 100) with_discount")
@@ -34,32 +44,4 @@ class Api_modal extends Public_model
 						->get()
 						->result_array();
 	}
-
-	/* public function user_signup()
-	{
-		$post = [
-				'name'     => $this->input->post('name'),
-				'mobile'   => $this->input->post('mobile'),
-				'password' => my_crypt($this->input->post('password'))
-			];
-
-		$this->db->trans_start();
-		$this->db->insert($this->table, $post);
-		$add = [
-				'address'   => $this->input->post('address'),
-				'latitude'  => $this->input->post('latitude'),
-				'longitude' => $this->input->post('longitude'),
-				'u_id'      => (string) $this->db->insert_id()
-			];
-		$this->db->insert('user_address', $add);
-
-		$this->db->trans_complete();
-
-		if ($this->db->trans_status() === TRUE)
-		{
-			return array_merge($post, $add);
-		}else{
-			return false;
-		}
-	} */
 }

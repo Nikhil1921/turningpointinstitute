@@ -94,6 +94,25 @@ class Home extends Public_controller  {
 		}
 	}
 
+	public function profile()
+	{
+		get();
+		$api = authenticate($this->table);
+		$row = $this->main->get($this->table, 'name, mobile, email, address, free_membership, free_used', ['id' => $api]);
+		$row['membership'] = $this->main->check('buy_membership', ['u_id' => $api, 'expiry >=' => date('Y-m-d H:i:s')], 'expiry');
+		
+		if ($row) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Profile successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Profile not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
 	public function update_profile()
 	{
 		post();
@@ -116,7 +135,7 @@ class Home extends Public_controller  {
                     'name'     => $this->input->post('name'),
                     'mobile'   => $this->input->post('mobile'),
                     'email'    => $this->input->post('email'),
-                    'address'    => $this->input->post('address')
+                    'address'  => $this->input->post('address')
                 ];
 
 		if ($row = $this->main->update(['id' => $api], $post, $this->table)) {
@@ -172,6 +191,106 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Membership list not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function buy_membership()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['mem_id',	'payment', 'pay_type']);
+		
+		$expiry = $this->main->get('membership', 'CONCAT(duration, " ", duration_type) duration', ['id' => $this->input->post('mem_id')]);
+		$post = [
+			'pay_type' => $this->input->post('pay_type'),
+			'payment'  => $this->input->post('payment'),
+			'expiry'   => date('Y-m-d H:i:s', strtotime($expiry['duration'])),
+			'mem_id'   => $this->input->post('mem_id'),
+			'u_id'     => $api
+		];
+
+		if ($row = $this->main->add($post, 'buy_membership')) {
+			$response["valid"] = true;
+            $response['message'] = "Buy membership successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Buy membership not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function buy_free_membership()
+	{
+		get();
+		$api = authenticate($this->table);
+		
+		$post = [
+			'free_membership' => date('Y-m-d H:i:s', strtotime('+1 Day')),
+			'free_used'		  => '1'
+		];
+		
+		if ($row = $this->main->update(['id' => $api], $post, $this->table)) {
+			$response["row"] = $post;
+			$response["valid"] = true;
+            $response['message'] = "Free membership successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Free membership not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function course()
+	{
+		get();
+		$api = authenticate($this->table);
+
+		if ($row = $this->api->get('course', 'title, sub_title, price, dicount_price, discount, details', [])) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Course details successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Course details not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function module_list()
+	{
+		get();
+		$api = authenticate($this->table);
+
+		if ($row = $this->api->getall('modules', 'id, title, sub_title, price, details', ['is_deleted' => 0])) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Module list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Module list not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
+	public function video_list()
+	{
+		get();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['module_id']);
+
+		if ($row = $this->api->video_list()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Module list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Module list not successfull. Try again.";
             echoResponse(400, $response);
 		}
 	}

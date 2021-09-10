@@ -140,7 +140,7 @@ class Home extends Admin_Controller {
         [
             'field' => 'email',
             'label' => 'Email',
-            'rules' => 'required|callback_email_check',
+            'rules' => 'required|callback_email_check|valid_email',
             'errors' => [
                 'required' => "%s is Required"
             ]

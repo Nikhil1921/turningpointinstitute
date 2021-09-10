@@ -218,7 +218,6 @@ function toggleFullScreen() {
 var form = '';
 
 function getModalData(anchor) {
-    console.log(anchor)
     $.ajax({
         url: anchor.getAttribute('data-url'),
         type: 'GET',

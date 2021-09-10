@@ -25,11 +25,9 @@
 				<table class="datatable table table-striped table-bordered nowrap">
 					<thead>
 						<th class="target">Sr.</th>
-						<th>Name</th>
-						<th>Mobile</th>
-						<th>E mail</th>
-						<th>Address</th>
-						<th class="target">Free Membership</th>
+						<th>Title</th>
+						<th>Sub Title</th>
+						<th>Price</th>
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

@@ -25,11 +25,11 @@
 				<table class="datatable table table-striped table-bordered nowrap">
 					<thead>
 						<th class="target">Sr.</th>
-						<th>Name</th>
-						<th>Mobile</th>
-						<th>E mail</th>
-						<th>Address</th>
-						<th class="target">Free Membership</th>
+						<th>Module</th>
+						<th>Title</th>
+						<th>Details</th>
+						<th class="target">Hindi PDF</th>
+						<th class="target">Gujarati PDF</th>
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

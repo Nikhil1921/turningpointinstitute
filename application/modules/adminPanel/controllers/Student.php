@@ -35,22 +35,21 @@ class Student extends Admin_Controller {
             $sub_array[] = $row->mobile;
             $sub_array[] = $row->email;
             $sub_array[] = $row->address;
+            $sub_array[] = $row->free_membership ? date('d-m-Y', strtotime($row->free_membership)) : "NA";
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
-            if ($update) {
+            if ($update)
                 $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
                         'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
-            }
             
-            if ($delete) {
+            if ($delete)
                 $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
                 form_button([ 'content' => '<i class="fa fa-trash"></i>',
                     'type'  => 'button',
                     'class' => 'btn btn-danger btn-outline-danger btn-icon', 
                     'onclick' => "script.delete(".e_id($row->id)."); return false;"]).
                 form_close();
-            }
 
             $action .= '</div>';
             $sub_array[] = $action;
@@ -77,8 +76,8 @@ class Student extends Admin_Controller {
             $data['title'] = $this->title;
             $data['operation'] = 'add';
             $data['url'] = $this->redirect;
-            
-            return $this->load->view("$this->redirect/add", $data);
+
+            return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
@@ -88,10 +87,12 @@ class Student extends Admin_Controller {
                     ];
             else{
                 $post = [
-                    'name'     => $this->input->post('name'),
-                    'mobile'   => $this->input->post('mobile'),
-                    'email'    => $this->input->post('email'),
-                    'address'    => $this->input->post('address')
+                    'name'            => $this->input->post('name'),
+                    'mobile'          => $this->input->post('mobile'),
+                    'email'           => $this->input->post('email'),
+                    'address'         => $this->input->post('address'),
+                    'free_membership' => $this->input->post('free_membership'),
+                    'free_used'		  => 1
                 ];
 
                 if ($this->main->add($post, $this->table))
@@ -119,9 +120,8 @@ class Student extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'name, mobile, email, address', ['id' => d_id($id)]);
-            
-            return $this->load->view("$this->redirect/update", $data);
+            $data['data'] = $this->main->get($this->table, 'name, mobile, email, address, free_membership', ['id' => d_id($id)]);
+            return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
@@ -131,10 +131,12 @@ class Student extends Admin_Controller {
                     ];
             else{
                 $post = [
-                    'name'     => $this->input->post('name'),
-                    'mobile'   => $this->input->post('mobile'),
-                    'email'    => $this->input->post('email'),
-                    'address'    => $this->input->post('address')
+                    'name'            => $this->input->post('name'),
+                    'mobile'          => $this->input->post('mobile'),
+                    'email'           => $this->input->post('email'),
+                    'address'         => $this->input->post('address'),
+                    'free_membership' => $this->input->post('free_membership'),
+                    'free_used'		  => 1
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -164,7 +166,7 @@ class Student extends Admin_Controller {
                         'status' => false
                     ];
         else
-            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1, 'admin_id' => $this->auth], $this->table))
+            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], $this->table))
                 $response = [
                     'message' => "$this->title deleted.",
                     'status' => true
@@ -224,7 +226,7 @@ class Student extends Admin_Controller {
         [
             'field' => 'email',
             'label' => 'Email',
-            'rules' => 'required|callback_email_check',
+            'rules' => 'required|callback_email_check|valid_email',
             'errors' => [
                 'required' => "%s is Required"
             ]
@@ -237,6 +239,14 @@ class Student extends Admin_Controller {
                 'required' => "%s is Required",
                 'numeric' => "%s is Invalid",
                 'exact_length' => "%s is Invalid",
+            ]
+        ],
+        [
+            'field' => 'free_membership',
+            'label' => 'Free Membership.',
+            'rules' => 'required',
+            'errors' => [
+                'required' => "%s is Required"
             ]
         ]
     ];

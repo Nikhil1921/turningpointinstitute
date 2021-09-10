@@ -39,7 +39,7 @@
 	</div>
 	<div class="col-md-12">
 		<div class="form-group">
-			<select class="select2" name="sub_role" id="sub_role" data-placeholder="Role">
+			<select class="form-control" name="sub_role" id="sub_role">
 				<option selected="" disabled="">Select Role</option>
 				<?php foreach ($roles as $role): ?>
 				<option value="<?= e_id($role['id']) ?>"><?= ucwords($role['role']) ?></option>
