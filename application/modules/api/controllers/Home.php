@@ -52,8 +52,12 @@ class Home extends Public_controller  {
 		
 		if ($this->main->check('otp_check', $post, 'mobile')) {
 			$this->main->delete('otp_check', $post);
-			$u_id = $this->main->check($this->table, ['mobile' => $post['mobile']], 'id');
-			$response["row"] = $u_id ? $u_id : (string) $this->main->add(['mobile' => $post['mobile']], $this->table);
+			$u_id = $this->main->get($this->table, 'id, name, mobile, email, address, free_membership, free_used', ['mobile' => $post['mobile']]);
+			if (!$u_id) {
+				$id = $this->main->add(['mobile' => $post['mobile']], $this->table);
+				$u_id = $this->main->get($this->table, 'id, name, mobile, email, address, free_membership, free_used', ['id' => $id]);
+			}
+			$response["row"] = $u_id;
 			$response["valid"] = true;
             $response['message'] = "OTP check successfull.";
             echoResponse(200, $response);

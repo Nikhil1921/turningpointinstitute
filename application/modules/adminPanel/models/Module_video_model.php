@@ -17,17 +17,22 @@ class Module_video_model extends Admin_model
             	 ->from($this->table)
 				 ->where('v.is_deleted', 0)
 				 ->join('modules m', 'm.id = v.module_id');
+		if (auth()->role != 'Super Admin')
+			$this->db->where('v.admin_id', $this->auth);		 
         
         $this->datatable();
 	}
 
 	public function count()
 	{
-		return $this->db->select('v.id')
-		            	->from($this->table)
-						->where('v.is_deleted', 0)
-				 		->join('modules m', 'm.id = v.module_id')
-		            	->get()
+		$this->db->select('v.id')
+				 ->from($this->table)
+				 ->where('v.is_deleted', 0)
+				 ->join('modules m', 'm.id = v.module_id');
+		if (auth()->role != 'Super Admin')
+			$this->db->where('v.admin_id', $this->auth);
+
+		return $this->db->get()
 						->num_rows();
 	}
 

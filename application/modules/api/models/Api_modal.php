@@ -38,7 +38,7 @@ class Api_modal extends Public_model
 
 	public function ebook_list()
 	{
-		return $this->db->select("CONCAT('".base_url($this->ebook)."', book) book, CONCAT('".base_url($this->ebook)."', image) image, title, price, del_charge, details, (price * (100 - discount) / 100) with_discount")
+		return $this->db->select("id, CONCAT('".base_url($this->ebook)."', book) book, CONCAT('".base_url($this->ebook)."', image) image, title, price, del_charge, details, (price * (100 - discount) / 100) with_discount")
 						->from('ebook')
 						->where(['is_deleted' => 0])
 						->get()

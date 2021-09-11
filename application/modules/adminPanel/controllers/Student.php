@@ -92,7 +92,8 @@ class Student extends Admin_Controller {
                     'email'           => $this->input->post('email'),
                     'address'         => $this->input->post('address'),
                     'free_membership' => $this->input->post('free_membership'),
-                    'free_used'		  => 1
+                    'free_used'		  => 1,
+                    'admin_id'        => $this->auth
                 ];
 
                 if ($this->main->add($post, $this->table))
@@ -136,7 +137,8 @@ class Student extends Admin_Controller {
                     'email'           => $this->input->post('email'),
                     'address'         => $this->input->post('address'),
                     'free_membership' => $this->input->post('free_membership'),
-                    'free_used'		  => 1
+                    'free_used'		  => 1,
+                    'admin_id'        => $this->auth
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -166,7 +168,7 @@ class Student extends Admin_Controller {
                         'status' => false
                     ];
         else
-            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], $this->table))
+            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1, 'admin_id' => $this->auth], $this->table))
                 $response = [
                     'message' => "$this->title deleted.",
                     'status' => true

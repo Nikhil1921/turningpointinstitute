@@ -16,6 +16,8 @@ class Student_model extends Admin_model
 		$this->db->select($this->select_column)
             	 ->from($this->table)
 				 ->where(['is_deleted' => 0]);
+		if (auth()->role != 'Super Admin')
+			$this->db->where('b.admin_id', $this->auth);
         $this->datatable();
 	}
 
@@ -24,6 +26,8 @@ class Student_model extends Admin_model
 		$this->db->select('s.id')
 				 ->from($this->table)
 				 ->where(['is_deleted' => 0]);
+		if (auth()->role != 'Super Admin')
+			$this->db->where('s.admin_id', $this->auth);
 
 		return $this->db->get()
 						->num_rows();

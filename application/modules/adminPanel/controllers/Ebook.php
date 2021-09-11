@@ -15,7 +15,7 @@ class Ebook extends Admin_Controller {
 		$data['title'] = $this->title;
 		$data['url'] = $this->redirect;
         $data['dataTable'] = TRUE;
-
+        
 		return $this->template->load('template', "$this->redirect/home", $data);
 	}
 
@@ -114,7 +114,8 @@ class Ebook extends Admin_Controller {
                         'discount'   => $this->input->post('discount'),
                         'del_charge' => $this->input->post('del_charge'),
                         'details'    => $this->input->post('details'),
-                        'image'      => $img['message']
+                        'image'      => $img['message'],
+                        'admin_id'   => $this->auth
                     ];
                     
                     if ($id = $this->main->add($post, $this->table))
@@ -161,7 +162,8 @@ class Ebook extends Admin_Controller {
                         'price'      => $this->input->post('price'),
                         'discount'   => $this->input->post('discount'),
                         'del_charge' => $this->input->post('del_charge'),
-                        'details'    => $this->input->post('details')
+                        'details'    => $this->input->post('details'),
+                        'admin_id'   => $this->auth
                     ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -226,7 +228,7 @@ class Ebook extends Admin_Controller {
                         'status' => false
                     ];
         else
-            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], $this->table))
+            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1, 'admin_id' => $this->auth], $this->table))
                 $response = [
                     'message' => "$this->title deleted.",
                     'status' => true

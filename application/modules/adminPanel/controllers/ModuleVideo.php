@@ -22,6 +22,7 @@ class ModuleVideo extends Admin_Controller {
     public function get()
     {
         check_ajax();
+        $add = check_access($this->name, 'add');
         $update = check_access($this->name, 'update');
         $delete = check_access($this->name, 'delete');
         $this->load->model('module_video_model', 'data');
@@ -36,31 +37,33 @@ class ModuleVideo extends Admin_Controller {
             $sub_array[] = $row->title;
             $sub_array[] = $row->details;
             
-            $sub_array[] = file_exists($this->path.$row->hindi_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->hindi_pdf),
-            'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
-            form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'hindi_pdf', 'file' => $row->hindi_pdf]).
-            form_label('<i class="fa fa-upload" ></i>', 'hindi_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
-            form_input([
-                'style' => "display: none;",
-                'type' => "file",
-                'id' => "hindi_".$row->id,
-                'name' => "pdf",
-                'onchange' => "bulkUpload(this.form)"
-            ]).
-            form_close();
+            if ($add)
+                $sub_array[] = file_exists($this->path.$row->hindi_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->hindi_pdf),
+                'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
+                form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'hindi_pdf', 'file' => $row->hindi_pdf]).
+                form_label('<i class="fa fa-upload" ></i>', 'hindi_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
+                form_input([
+                    'style' => "display: none;",
+                    'type' => "file",
+                    'id' => "hindi_".$row->id,
+                    'name' => "pdf",
+                    'onchange' => "bulkUpload(this.form)"
+                ]).
+                form_close();
             
-            $sub_array[] = file_exists($this->path.$row->guj_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->guj_pdf),
-            'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
-            form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'guj_pdf', 'file' => $row->guj_pdf]).
-            form_label('<i class="fa fa-upload" ></i>', 'guj_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
-            form_input([
-                'style' => "display: none;",
-                'type' => "file",
-                'id' => "guj_".$row->id,
-                'name' => "pdf",
-                'onchange' => "bulkUpload(this.form)"
-            ]).
-            form_close();
+            if ($add)
+                $sub_array[] = file_exists($this->path.$row->guj_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->guj_pdf),
+                'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
+                form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'guj_pdf', 'file' => $row->guj_pdf]).
+                form_label('<i class="fa fa-upload" ></i>', 'guj_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
+                form_input([
+                    'style' => "display: none;",
+                    'type' => "file",
+                    'id' => "guj_".$row->id,
+                    'name' => "pdf",
+                    'onchange' => "bulkUpload(this.form)"
+                ]).
+                form_close();
             
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             
@@ -142,7 +145,8 @@ class ModuleVideo extends Admin_Controller {
                         'details'    => $this->input->post('details'),
                         'hindi_pdf'  => time(),
                         'guj_pdf'    => time()+1,
-                        'video'      => $video['message']
+                        'video'      => $video['message'],
+                        'admin_id'   => $this->auth
                     ];
 
                     if ($id = $this->main->add($post, $this->table))
@@ -197,7 +201,8 @@ class ModuleVideo extends Admin_Controller {
                         'module_id'  => d_id($this->input->post('module_id')),
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
-                        'video'      => $video['message']
+                        'video'      => $video['message'],
+                        'admin_id'   => $this->auth
                     ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -259,7 +264,7 @@ class ModuleVideo extends Admin_Controller {
                         'status' => false
                     ];
         else
-            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1], $this->table))
+            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1, 'admin_id' => $this->auth], $this->table))
                 $response = [
                     'message' => "$this->title deleted.",
                     'status' => true
