@@ -17,7 +17,7 @@ class Student_model extends Admin_model
             	 ->from($this->table)
 				 ->where(['is_deleted' => 0]);
 		if (auth()->role != 'Super Admin')
-			$this->db->where('b.admin_id', $this->auth);
+			$this->db->where('s.admin_id', $this->auth);
         $this->datatable();
 	}
 

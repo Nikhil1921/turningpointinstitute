@@ -206,6 +206,7 @@ class Home extends Public_controller  {
 		verifyRequiredParams(['mem_id',	'payment', 'pay_type']);
 		
 		$expiry = $this->main->get('membership', 'CONCAT(duration, " ", duration_type) duration', ['id' => $this->input->post('mem_id')]);
+		
 		$post = [
 			'pay_type' => $this->input->post('pay_type'),
 			'payment'  => $this->input->post('payment'),

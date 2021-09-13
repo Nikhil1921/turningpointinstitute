@@ -10,7 +10,15 @@ class Home extends Admin_Controller {
 		$data['name'] = 'dashboard';
 		$data['title'] = 'dashboard';
 		$data['url'] = $this->redirect;
-
+        $this->load->model('student_model');
+        $data['student'] = $this->student_model->count();
+        $this->load->model('ebook_model');
+        $data['ebook'] = $this->ebook_model->count();
+        $this->load->model('module_model');
+        $data['module'] = $this->module_model->count();
+        $this->load->model('module_video_model');
+        $data['video'] = $this->module_video_model->count();
+        
 		return $this->template->load('template', 'dashboard', $data);
 	}
 
