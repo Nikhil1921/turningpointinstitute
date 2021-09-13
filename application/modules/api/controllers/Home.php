@@ -298,4 +298,22 @@ class Home extends Public_controller  {
             echoResponse(400, $response);
 		}
 	}
+
+	public function question_list()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['language', 'video_id', 'test_type']);
+
+		if ($row = $this->api->question_list()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Question list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Question list not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
 }

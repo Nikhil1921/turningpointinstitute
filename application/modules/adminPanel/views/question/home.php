@@ -3,10 +3,10 @@
 	<div class="card">
 		<div class="card-header">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-10">
 					<h5>List of <?= ucwords($title) ?></h5>
 				</div>
-				<?php if (check_access($name, 'add')): ?>
+				<!-- <?php if (check_access($name, 'add')): ?>
 				<div class="col-md-3">
 					<?= anchor('uploadQuestionExcel.xlsx', '<i class="fa fa-download" ></i>Download Demo File', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12 download']) ?>
 				</div>
@@ -21,7 +21,7 @@
 					'onchange' => "bulkUpload(this.form)"
 					]) ?>
 					<?= form_close() ?>
-				</div>
+				</div> -->
 				<div class="col-md-2">
 					<?= form_button([
 					'content' => '<i class="fa fa-plus-square-o" ></i>Add',

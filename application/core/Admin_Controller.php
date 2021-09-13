@@ -49,6 +49,15 @@ class Admin_Controller extends MY_Controller
             return ['error' => true, 'message' => strip_tags($this->upload->display_errors())];
     }
 
+	public function getModuleVideos()
+    {
+        $videos = array_map(function($arr) {
+            return ['id' => e_id($arr['id']), 'title' => $arr['title']];
+        }, $this->main->getall('module_video', 'id, title', ['is_deleted' => 0, 'module_id' => d_id($this->input->get('module_id'))]));
+        
+        die(json_encode(['videos' => $videos]));
+    }
+
 	public function error_404()
 	{
 		$data['name'] = 'error 404';

@@ -278,6 +278,40 @@ function bulkUpload(upload) {
     saveData();
 }
 
+function getModuleVideos(select) {
+    let dependent = $(select).data('dependent');
+    let value = $(select).data('value');
+    let option = '<option value="" selected disabled>Select module video</option>';
+    let module_id = select.value;
+    if (select.value)
+        $.ajax({
+            url: $('#base_url').val() + 'getModuleVideos',
+            type: "GET",
+            data: { module_id: module_id },
+            dataType: 'json',
+            cache: false,
+            beforeSend: function() {
+                $('.theme-loader').fadeIn();
+            },
+            complete: function() {
+                $('.theme-loader').fadeOut();
+            },
+            success: function(result) {
+                $(result.videos).each(function(k, v) {
+                    option += `<option value="${v.id}">${v.title}</option>`;
+                    $("#" + dependent).html(option);
+                    $("#" + dependent).val(value);
+                });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                notify("Error : ", "Something is not going good. Try again.", "danger");
+            }
+        });
+    else
+        $("#" + dependent).html(option);
+    return;
+}
+
 function saveData() {
     if (form) {
         $.ajax({

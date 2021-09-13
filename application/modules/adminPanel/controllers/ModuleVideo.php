@@ -120,7 +120,9 @@ class ModuleVideo extends Admin_Controller {
             $data['title'] = $this->title;
             $data['operation'] = 'add';
             $data['url'] = $this->redirect;
-            $data['modules'] = $this->main->getall('modules', 'id, title', ['is_deleted' => 0]);
+            $where = ['is_deleted' => 0];
+            if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
+            $data['modules'] = $this->main->getall('modules', 'id, title', $where);
             
             return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
@@ -176,7 +178,9 @@ class ModuleVideo extends Admin_Controller {
             $data['url'] = $this->redirect;
             $data['id'] = $id;
             $data['data'] = $this->main->get($this->table, 'title, details, video, module_id', ['id' => d_id($id)]);
-            $data['modules'] = $this->main->getall('modules', 'id, title', ['is_deleted' => 0]);
+            $where = ['is_deleted' => 0];
+            if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
+            $data['modules'] = $this->main->getall('modules', 'id, title', $where);
 
             return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{

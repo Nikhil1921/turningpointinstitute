@@ -33,7 +33,7 @@ class Question extends Admin_Controller {
         {  
             $sub_array = [];
             $sub_array[] = $sr;
-            $sub_array[] = ucfirst($row->question);
+            $sub_array[] = $row->question;
             $sub_array[] = $row->answer;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
@@ -77,28 +77,35 @@ class Question extends Admin_Controller {
             $data['title'] = $this->title;
             $data['operation'] = 'add';
             $data['url'] = $this->redirect;
+            $where = ['is_deleted' => 0];
+            if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
+            $data['modules'] = $this->main->getall('modules', 'id, title', $where);
             
-            return $this->load->view("$this->redirect/add", $data);
+            return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
             $response = [
-                    'message' => str_replace("*", "", strip_tags(validation_errors('','<br>'))),
-                    'status' => false
-                ];
+                'message' => str_replace("*", "", strip_tags(validation_errors('','<br>'))),
+                'status' => false
+            ];
             else{
                 $post = [
-                		'admin_id' => $this->auth,
-                        'question' => $this->input->post('question'),
-					    'options'  => json_encode($this->input->post('options')),
-					    'answer'   => $this->input->post('answer')
+                    'admin_id'  => $this->auth,
+                    'question'  => $this->input->post('question'),
+                    'module_id' => d_id($this->input->post('module_id')),
+                    'video_id'  => d_id($this->input->post('video_id')),
+                    'options'   => $this->input->post('options'),
+                    'language'  => $this->input->post('language'),
+                    'test_type' => $this->input->post('test_type'),
+                    'answer'    => $this->input->post('answer')
                 ];
-
+                
                 if ($this->main->add($post, $this->table))
-                    $response = [
-                        'message' => "$this->title added.",
-                        'status' => true
-                    ];
+                $response = [
+                    'message' => "$this->title added.",
+                    'status' => true
+                ];
                 else
                     $response = [
                         'message' => "$this->title not added. Try again.",
@@ -118,9 +125,12 @@ class Question extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'question, options, answer', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'question, module_id, video_id, options, language, test_type, answer', ['id' => d_id($id)]);
+            $where = ['is_deleted' => 0];
+            if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
+            $data['modules'] = $this->main->getall('modules', 'id, title', $where);
 
-            return $this->load->view("$this->redirect/update", $data);
+            return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
@@ -130,10 +140,13 @@ class Question extends Admin_Controller {
                 ];
             else{
                 $post = [
-                        'admin_id' => $this->auth,
-                        'question' => $this->input->post('question'),
-                        'options'  => json_encode($this->input->post('options')),
-                        'answer'   => $this->input->post('answer')
+                    'question'  => $this->input->post('question'),
+                    'module_id' => d_id($this->input->post('module_id')),
+                    'video_id'  => d_id($this->input->post('video_id')),
+                    'options'   => $this->input->post('options'),
+                    'language'  => $this->input->post('language'),
+                    'test_type' => $this->input->post('test_type'),
+                    'answer'    => $this->input->post('answer')
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -151,7 +164,7 @@ class Question extends Admin_Controller {
         }
     }
 
-    public function upload()
+    /* public function upload()
     {
         check_ajax();
         if(!empty($_FILES["bulk_upload"]["name"])):
@@ -203,7 +216,7 @@ class Question extends Admin_Controller {
                 ];
         endif;
         die(json_encode($response));
-    }
+    } */
 
     public function delete()
     {
@@ -229,7 +242,33 @@ class Question extends Admin_Controller {
         die(json_encode($response));
     }
 
+    public function options_check($str)
+    {   
+        if ($this->input->post('test_type') == 'Blocks' && !$str)
+        {
+            $this->form_validation->set_message('options_check', '%s are required');
+            return FALSE;
+        } else
+            return TRUE;
+    }
+
     protected $validate = [
+        [
+            'field' => 'module_id',
+            'label' => 'Module',
+            'rules' => 'required',
+            'errors' => [
+                'required' => "%s is Required"
+            ]
+        ],
+        [
+            'field' => 'video_id',
+            'label' => 'Module video',
+            'rules' => 'required',
+            'errors' => [
+                'required' => "%s is Required"
+            ]
+        ],
         [
             'field' => 'question',
             'label' => 'Question',
@@ -239,16 +278,29 @@ class Question extends Admin_Controller {
             ]
         ],
         [
-            'field' => 'options[]',
-            'label' => 'Options',
+            'field' => 'answer',
+            'label' => 'Answer',
             'rules' => 'required',
             'errors' => [
-                'required' => "All %s are Required"
+                'required' => "%s is Required"
+            ]
+        ],
+        [
+            'field' => 'options',
+            'label' => 'Options',
+            'rules' => 'callback_options_check'
+        ],
+        [
+            'field' => 'language',
+            'label' => 'Language',
+            'rules' => 'required',
+            'errors' => [
+                'required' => "%s is Required"
             ],
         ],
         [
-            'field' => 'answer',
-            'label' => 'Answer',
+            'field' => 'test_type',
+            'label' => 'Test type',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"

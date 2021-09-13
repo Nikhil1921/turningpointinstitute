@@ -44,4 +44,13 @@ class Api_modal extends Public_model
 						->get()
 						->result_array();
 	}
+
+	public function question_list()
+	{
+		return $this->db->select("id, question, options, answer")
+						->from('questions')
+						->where(['is_deleted' => 0, 'language' => $this->input->post('language'), 'video_id' => $this->input->post('video_id'), 'test_type' => $this->input->post('test_type')])
+						->get()
+						->result_array();
+	}
 }
