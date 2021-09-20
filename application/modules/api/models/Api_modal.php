@@ -58,7 +58,7 @@ class Api_modal extends Public_model
 					];
 		}, $this->db->select("id, question, options, answer")
 						->from('questions')
-						->where(['is_deleted' => 0, 'language' => $this->input->post('language'), 'video_id' => $this->input->post('video_id'), 'test_type' => $this->input->post('test_type')])
+						->where(['is_deleted' => 0, 'language' => $this->input->get('language'), 'video_id' => $this->input->get('video_id'), 'test_type' => $this->input->get('test_type')])
 						->get()
 						->result_array());
 	}

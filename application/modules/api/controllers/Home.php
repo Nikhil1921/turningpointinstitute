@@ -302,7 +302,7 @@ class Home extends Public_controller  {
 
 	public function question_list()
 	{
-		post();
+		get();
 		$api = authenticate($this->table);
 		verifyRequiredParams(['language', 'video_id', 'test_type']);
 

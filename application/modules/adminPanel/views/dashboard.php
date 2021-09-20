@@ -22,11 +22,11 @@ $colors = ['yellow', 'green', 'pink', 'lite-green'] ?>
                 <div class="card-block">
                     <div class="row align-items-end">
                         <div class="col-8">
-                            <h4 class="text-white">₹ <?= $ebook ? $ebook : 0 ?></h4>
+                            <h4 class="text-white"><?= $ebook ? $ebook : 0 ?></h4>
                             <h6 class="text-white m-b-0">Ebooks</h6>
                         </div>
                         <div class="col-4 text-right"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            ₹
+                            <i class="fa fa-book"></i>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@ $colors = ['yellow', 'green', 'pink', 'lite-green'] ?>
                             <h6 class="text-white m-b-0">Module</h6>
                         </div>
                         <div class="col-4 text-right"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <i class="fa fa-table"></i>
+                            <i class="fa fa-book"></i>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ $colors = ['yellow', 'green', 'pink', 'lite-green'] ?>
                             <h6 class="text-white m-b-0">Videos</h6>
                         </div>
                         <div class="col-4 text-right"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <i class="fa fa-question-circle-o"></i>
+                            <i class="fa fa-video-camera"></i>
                         </div>
                     </div>
                 </div>
