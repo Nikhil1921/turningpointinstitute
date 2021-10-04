@@ -4,7 +4,7 @@ class Home extends Public_controller  {
 
 	public function index()
 	{
-		return redirect(admin());
+		return $this->template->load('template', 'home');
 	}
 
 	public function error_404()
