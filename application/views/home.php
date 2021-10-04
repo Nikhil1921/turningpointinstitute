@@ -1,42 +1,47 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<button id='btnGiveCommand'>Give Command!</button>
-<br><br>
-<span id='message'></span>
-<div id="meet">
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger text-center" id="result"></div>
+        </div>
+        <?php $words = ['Hello', 'World', 'Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipisicing', 'elit.', 'Consequatur', 'quae', 'necessitatibus,', 'reprehenderit', 'reiciendis', 'quam', 'temporibus.', 'Porro', 'libero', 'vel', 'labore', 'quod', 'neque,', 'totam', 'iusto', 'at', 'deserunt', 'minima', 'animi', 'mollitia', 'vero', 'illum?'] ?>
+        <div class="col-md-12" id="words">
+            <?php foreach($words as $word): ?>
+                <button class="btn btn-success"><?= $word ?></button>
+            <?php endforeach ?>
+        </div>
+        <div class="col-md-12">
+            <br>
+            <button class="btn btn-primary" onclick="speak()">Result</button>
+        </div>
+        <div class="col-md-12">
+            <br>
+            <button id='btnGiveCommand' class="btn btn-primary">Give Command!</button>
+        </div>
+        <div id='message' class="col-md-12"></div>
+        <div class="col-md-10">
+            <input type="text" id="text" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <button onclick="make()" class="btn btn-primary col-md-12">Click</button>
+        </div>
+    </div>
 </div>
 
-<!-- <input type="text" id="text">
-<button onclick="make()">Click</button> -->
-<script src='https://meet.jit.si/external_api.js'></script>
-
 <script>
-    const domain = 'meet.jit.si';
-    const options = {
-        roomName: 'densetek',
-        width: 700,
-        height: 700,
-        /* devices: {
-            audioInput: '<deviceLabel>',
-            audioOutput: '<deviceLabel>',
-            videoInput: '<deviceLabel>'
-        }, */
-        parentNode: document.querySelector('#meet')
-    };
-    const api = new JitsiMeetExternalAPI(domain, options);
-    api.captureLargeVideoScreenshot().then(data => {
-        console.log(data)
-        // data is an Object with only one param, dataURL
-        // data.dataURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAA..."
-    });
     function make(str){
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1; // From 0 to 1
         msg.rate = 0.6; // From 0.1 to 10
         msg.pitch = 0; // From 0 to 2
-        msg.text = str;
-        // msg.text = document.getElementById('text').value;
+        // msg.text = str;
+        msg.text = document.getElementById('text').value;
         msg.lang = 'en';
         speechSynthesis.speak(msg);
+        speechSynthesis.onerror = function(event) {
+            console.log(event.error)
+        }   
     }
 
     var message = document.querySelector('#message');
@@ -75,4 +80,33 @@
     document.querySelector('#btnGiveCommand').addEventListener('click', function(){
         recognition.start();
     });
+</script>
+<script>
+    words = document.getElementsByClassName('btn-success');
+    
+    for (var i = 0; i < words.length; i++) {
+        words[i].addEventListener('click',buttonClick,false);
+    }
+
+    function buttonClick(ev){
+        if ($(ev.target).hasClass('result')){
+            $(ev.target).removeClass('result');
+            $(ev.target).addClass('word');
+            $('#words').append(ev.target);
+        }else{
+            $(ev.target).removeClass('word');
+            $(ev.target).addClass('result');
+            $('#result').append(ev.target);
+        }
+    }
+
+    function speak(){
+        let result = document.getElementsByClassName('result');
+        let txt = '';
+        for (var i = 0; i < result.length; i++) {
+            txt += words[i].innerHTML+' ';
+        }
+        document.getElementById('text').value = txt;
+        make();
+    }
 </script>

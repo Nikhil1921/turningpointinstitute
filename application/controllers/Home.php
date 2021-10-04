@@ -6,6 +6,11 @@ class Home extends Public_controller  {
 	{
 		return $this->template->load('template', 'home');
 	}
+	
+	public function word_game()
+	{
+		return $this->template->load('template', 'word_game');
+	}
 
 	public function error_404()
 	{

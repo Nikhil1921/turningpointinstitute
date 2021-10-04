@@ -2,7 +2,7 @@
 
 $route['default_controller'] = 'home';
 $route['404_override'] = 'home/error_404';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = TRUE;
 
 $route[ADMIN.'/forgot-password'] = ADMIN.'/login/forgot_password';
 $route[ADMIN.'/checkOtp'] = ADMIN.'/login/checkOtp';
