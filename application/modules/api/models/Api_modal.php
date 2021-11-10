@@ -29,7 +29,7 @@ class Api_modal extends Public_model
 
 	public function video_list()
 	{
-		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, CONCAT('".base_url($this->video)."', hindi_pdf) hindi_pdf, CONCAT('".base_url($this->video)."', guj_pdf) guj_pdf")
+		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, hindi_pdf, guj_pdf, video_no")
 						->from('module_video')
 						->where(['is_deleted' => 0, 'module_id' => $this->input->get('module_id')])
 						->get()
@@ -38,7 +38,7 @@ class Api_modal extends Public_model
 
 	public function ebook_list()
 	{
-		return $this->db->select("id, CONCAT('".base_url($this->ebook)."', book) book, CONCAT('".base_url($this->ebook)."', image) image, title, price, del_charge, details, (price * (100 - discount) / 100) with_discount")
+		return $this->db->select("id, CONCAT('".base_url($this->ebook)."', image) image, title, price, del_charge, details, (price - discount) with_discount")
 						->from('ebook')
 						->where(['is_deleted' => 0])
 						->get()

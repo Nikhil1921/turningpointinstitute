@@ -29,9 +29,9 @@ if($_SERVER['HTTP_HOST'] == 'localhost'){
     $db['default'] = array(
         'dsn'   => '',
         'hostname' => 'localhost',
-        'username' => 'denseeqq_demo',
-        'password' => 'demo@321',
-        'database' => 'denseeqq_turningpointinstitute',
+        'username' => 'turningp_turningpointinstitute',
+        'password' => 'mXSJunT81XV5',
+        'database' => 'turningp_turningpointinstitute',
         'dbdriver' => 'mysqli',
         'dbprefix' => '',
         'pconnect' => FALSE,

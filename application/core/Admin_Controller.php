@@ -58,6 +58,15 @@ class Admin_Controller extends MY_Controller
         die(json_encode(['videos' => $videos]));
     }
 
+	public function getSubChapters()
+    {
+        $chapters = array_map(function($arr) {
+            return ['id' => e_id($arr['id']), 'title' => $arr['title']];
+        }, $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => d_id($this->input->get('ch_id'))]));
+        
+        die(json_encode(['chapters' => $chapters]));
+    }
+
 	public function error_404()
 	{
 		$data['name'] = 'error 404';

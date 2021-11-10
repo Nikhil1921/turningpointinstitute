@@ -25222,3 +25222,21 @@ body.dark #styleSelector .form-control {
 .input-group-text {
     background-color: #01a9ac;
 }
+
+@font-face {
+    font-family: kruti dev;
+    src: url('fonts/Gujrati-Saral-1.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: Hindi Saral;
+    src: url('fonts/hsaral-1.ttf') format("truetype");
+}
+
+.gujarati-class {
+    font-family: kruti dev;
+}
+
+.hindi-class {
+    font-family: Hindi Saral;
+}

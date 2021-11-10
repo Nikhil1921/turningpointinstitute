@@ -39,3 +39,4 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="status" value="1" />

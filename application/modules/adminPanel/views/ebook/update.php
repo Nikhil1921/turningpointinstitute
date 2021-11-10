@@ -15,7 +15,7 @@
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<?= form_label('Discount in %', 'discount') ?>
+			<?= form_label('Discount', 'discount') ?>
 			<?= form_input('discount', $data['discount'], 'class="form-control" id="discount" maxlength="2"') ?>
 		</div>
 	</div>

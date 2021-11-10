@@ -8,6 +8,12 @@
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
+			<?= form_label('Video No', 'video_no') ?>
+			<?= form_input('video_no', isset($data['video_no']) ? $data['video_no'] : '', 'class="form-control" id="video_no"  maxlength="255"') ?>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="form-group">
 			<?= form_label('Module', 'module_id') ?>
 			<select class="form-control" name="module_id" id="module_id">
 				<option selected="" disabled="">Select Module</option>
@@ -34,5 +40,18 @@
 			<?= form_textarea('details', isset($data['details']) ? $data['details'] : '', 'class="form-control" id="details"') ?>
 		</div>
 	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Hindi Assignment', 'hindi_pdf') ?>
+			<?= form_textarea('hindi_pdf', isset($data['hindi_pdf']) ? $data['hindi_pdf'] : '', 'class="form-control ckeditor" id="hindi_pdf"') ?>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Gujarati Assignment', 'guj_pdf') ?>
+			<?= form_textarea('guj_pdf', isset($data['guj_pdf']) ? $data['guj_pdf'] : '', 'class="form-control ckeditor" id="guj_pdf"') ?>
+		</div>
+	</div>
 </div>
 <?= form_close() ?>
+<script src="<?= b_asset('ckeditor/ckeditor.js') ?>"></script>

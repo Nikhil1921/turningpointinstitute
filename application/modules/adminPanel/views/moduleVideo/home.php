@@ -28,8 +28,8 @@
 						<th>Module</th>
 						<th>Title</th>
 						<th>Details</th>
-						<th class="target">Hindi PDF</th>
-						<th class="target">Gujarati PDF</th>
+						<!-- <th class="target">Hindi PDF</th>
+						<th class="target">Gujarati PDF</th> -->
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

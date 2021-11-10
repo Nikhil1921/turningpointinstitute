@@ -17,25 +17,6 @@
 			<select class="form-control" name="video_id" id="video_id"></select>
 		</div>
 	</div>
-	<div class="col-md-12">
-		<div class="form-group">
-			<?= form_label('Question', 'question') ?>
-			<?= form_input('question', isset($data['question']) ? $data['question'] : '', 'class="form-control" id="question"') ?>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="form-group">
-			<?= form_label('Answer', 'answer') ?>
-			<?= form_input('answer', isset($data['answer']) ? $data['answer'] : '', 'class="form-control" id="answer"') ?>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="form-group">
-			<?= form_label('Options', 'options') ?>
-            <br>
-			<?= form_input('options', isset($data['options']) ? $data['options'] : '', 'data-role="tagsinput" class="form-control" id="options"') ?>
-		</div>
-	</div>
 	<div class="col-md-6">
 		<div class="form-group">
             <?= form_label('Language', 'language') ?>
@@ -53,6 +34,25 @@
 				<option value="Speaking" <?= isset($data['test_type']) && $data['test_type'] == 'Speaking' ? 'selected' : '' ?>>Speaking</option>
 				<option value="Writing" <?= isset($data['test_type']) && $data['test_type'] == 'Writing' ? 'selected' : '' ?>>Writing</option>
 			</select>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Question', 'question') ?>
+			<?= form_input('question', isset($data['question']) ? $data['question'] : '', 'class="form-control gujarati-class" id="question"') ?>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Answer', 'answer') ?>
+			<?= form_input('answer', isset($data['answer']) ? $data['answer'] : '', 'class="form-control" id="answer"') ?>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Options', 'options') ?>
+            <br>
+			<?= form_input('options', isset($data['options']) ? $data['options'] : '', 'data-role="tagsinput" class="form-control" id="options"') ?>
 		</div>
 	</div>
 </div>

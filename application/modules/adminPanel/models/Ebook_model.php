@@ -6,7 +6,7 @@
 class Ebook_model extends Admin_model
 {
 	public $table = "ebook b";
-	public $select_column = ['b.id', 'b.title', 'b.price', 'b.discount', 'b.del_charge', 'b.image', 'b.book'];
+	public $select_column = ['b.id', 'b.title', 'b.price', 'b.discount', 'b.del_charge', 'b.image'];
 	public $search_column = ['b.id', 'b.title', 'b.price', 'b.discount', 'b.del_charge'];
     public $order_column = [null, 'b.title', 'b.price', 'b.discount', 'b.del_charge', null, null, null];
 	public $order = ['b.id' => 'DESC'];

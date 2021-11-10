@@ -240,6 +240,10 @@ function getModalData(anchor) {
                         placeholder: select.getAttribute('data-placeholder')
                     });
                 }
+                let language = document.getElementById('common-modal').querySelector('select#language');
+                if (language) {
+                    $('#language').trigger('change');
+                }
                 /*let textarea = document.getElementById('common-modal').querySelector( 'textarea.ckeditor' );
                 if (textarea) {
                     $('.ckeditor').ckeditor();
@@ -278,6 +282,38 @@ function bulkUpload(upload) {
     saveData();
 }
 
+function getSubChapters(select) {
+    let dependent = $(select).data('dependent');
+    let value = $(select).data('value');
+    let option = '<option value="" selected disabled>Select sub chapter</option>';
+    if (select.value)
+        $.ajax({
+            url: $('#base_url').val() + 'getSubChapters',
+            type: "GET",
+            data: { ch_id: select.value },
+            dataType: 'json',
+            cache: false,
+            beforeSend: function() {
+                $('.theme-loader').fadeIn();
+            },
+            complete: function() {
+                $('.theme-loader').fadeOut();
+            },
+            success: function(result) {
+                $(result.chapters).each(function(k, v) {
+                    option += `<option value="${v.id}">${v.title}</option>`;
+                    $("#" + dependent).html(option);
+                    $("#" + dependent).val(value);
+                });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                notify("Error : ", "Something is not going good. Try again.", "danger");
+            }
+        });
+    $("#" + dependent).html(option);
+    return;
+}
+
 function getModuleVideos(select) {
     let dependent = $(select).data('dependent');
     let value = $(select).data('value');
@@ -307,8 +343,8 @@ function getModuleVideos(select) {
                 notify("Error : ", "Something is not going good. Try again.", "danger");
             }
         });
-    else
-        $("#" + dependent).html(option);
+
+    $("#" + dependent).html(option);
     return;
 }
 
@@ -455,3 +491,14 @@ var script = {
             });
     }
 };
+
+$(document).on('change', '#language', function() {
+    if ($(this).val() == 'Hindi') {
+        $('#question').removeClass('gujarati-class');
+        $('#question').addClass('hindi-class');
+    }
+    if ($(this).val() == 'Gujarati') {
+        $('#question').addClass('gujarati-class');
+        $('#question').removeClass('hindi-class');
+    }
+});

@@ -37,11 +37,11 @@ class Ebook extends Admin_Controller {
             $sub_array[] = $row->discount;
             $sub_array[] = $row->del_charge;
             $sub_array[] = img(['src' => $this->path.$row->image, 'height' => 75]);
-            $sub_array[] = $row->book != 'Pending' ? 
+            /* $sub_array[] = $row->book != 'Pending' ? 
                             form_button(['content' => 'View '.$this->title, 'type'  => 'button', 'data-url' => base_url($this->redirect.'/view/'.e_id($row->id)),
                         'data-title' => "$this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-round col-12']) 
                         : form_button(['content' => 'Upload '.$this->title, 'type'  => 'button', 'data-url' => base_url($this->redirect.'/upload/'.e_id($row->id)),
-                        'data-title' => "Upload $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-round col-12']);
+                        'data-title' => "Upload $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-round col-12']); */
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             

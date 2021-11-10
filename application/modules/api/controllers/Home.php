@@ -215,7 +215,7 @@ class Home extends Public_controller  {
 			'u_id'     => $api
 		];
 
-		if ($row = $this->main->add($post, 'buy_membership')) {
+		if ($row = $this->main->add($post, 'buy_membership') && $this->main->update(['id' => $api], ['registered' => 1], $this->table)) {
 			$response["valid"] = true;
             $response['message'] = "Buy membership successfull.";
             echoResponse(200, $response);

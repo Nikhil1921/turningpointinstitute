@@ -37,7 +37,7 @@ class ModuleVideo extends Admin_Controller {
             $sub_array[] = $row->title;
             $sub_array[] = $row->details;
             
-            if ($add)
+            /* if ($add)
                 $sub_array[] = file_exists($this->path.$row->hindi_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->hindi_pdf),
                 'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
                 form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'hindi_pdf', 'file' => $row->hindi_pdf]).
@@ -63,7 +63,7 @@ class ModuleVideo extends Admin_Controller {
                     'name' => "pdf",
                     'onchange' => "bulkUpload(this.form)"
                 ]).
-                form_close();
+                form_close(); */
             
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             
@@ -134,34 +134,37 @@ class ModuleVideo extends Admin_Controller {
                     ];
             else{
                 $video = $this->uploadVideo();
-
-                if ($video['error'])
-                    $response = [
-                            'message' => $video['message'],
-                            'status' => false
-                        ];
-                else{
-                    $post = [
+                $post = [
                         'module_id'  => d_id($this->input->post('module_id')),
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
-                        'hindi_pdf'  => time(),
-                        'guj_pdf'    => time()+1,
-                        'video'      => $video['message'],
+                        'hindi_pdf'  => $this->input->post('hindi_pdf'),
+                        'guj_pdf'    => $this->input->post('guj_pdf'),
+                        'video_no'   => $this->input->post('video_no'),
+                        // 'video'      => $video['message'],
                         'admin_id'   => $this->auth
                     ];
-
-                    if ($id = $this->main->add($post, $this->table))
-                        $response = [
-                            'message'   => "$this->title added.",
-                            'status'    => true
-                        ];
-                    else
-                        $response = [
-                            'message' => "$this->title not added. Try again.",
+                if ($video['error'])
+                    $post['video'] = 'No Video';
+                    /* $response = [
+                            'message' => $video['message'],
                             'status' => false
-                        ];
-                }
+                        ]; */
+                else
+                    $post['video'] = $video['message'];
+
+                if ($id = $this->main->add($post, $this->table))
+                    $response = [
+                        'message'   => "$this->title added.",
+                        'redirect'  => $this->name,
+                        'status'    => true
+                    ];
+                else
+                    $response = [
+                        'message'  => "$this->title not added. Try again.",
+                        'redirect' => $this->name,
+                        'status'   => false
+                    ];
             }
 
             die(json_encode($response));
@@ -177,7 +180,7 @@ class ModuleVideo extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id, hindi_pdf, guj_pdf, video_no', ['id' => d_id($id)]);
             $where = ['is_deleted' => 0];
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
@@ -206,18 +209,23 @@ class ModuleVideo extends Admin_Controller {
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
                         'video'      => $video['message'],
+                        'hindi_pdf'  => $this->input->post('hindi_pdf'),
+                        'guj_pdf'    => $this->input->post('guj_pdf'),
+                        'video_no'   => $this->input->post('video_no'),
                         'admin_id'   => $this->auth
                     ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
                     $response = [
-                        'message' => "$this->title updated.",
-                        'status' => true
+                        'message'  => "$this->title updated.",
+                        'redirect' => $this->name,
+                        'status'   => true
                     ];
                 else
                     $response = [
-                        'message' => "$this->title not updated. Try again.",
-                        'status' => false
+                        'message'  => "$this->title not updated. Try again.",
+                        'redirect' => $this->name,
+                        'status'   => false
                     ];
             }
 
@@ -225,7 +233,7 @@ class ModuleVideo extends Admin_Controller {
         }
     }
 
-    public function pdfUpload()
+    /* public function pdfUpload()
     {
         $this->load->library('upload');
         
@@ -255,7 +263,7 @@ class ModuleVideo extends Admin_Controller {
             $response = ['status' => false, 'message' => strip_tags($this->upload->display_errors())];
         
         die(json_encode($response));
-    }
+    } */
 
     public function delete()
     {
@@ -270,13 +278,15 @@ class ModuleVideo extends Admin_Controller {
         else
             if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_deleted' => 1, 'admin_id' => $this->auth], $this->table))
                 $response = [
-                    'message' => "$this->title deleted.",
-                    'status' => true
+                    'message'  => "$this->title deleted.",
+                    'redirect' => $this->name,
+                    'status'   => true
                 ];
             else
                 $response = [
-                    'message' => "$this->title not deleted. Try again.",
-                    'status' => false
+                    'message'  => "$this->title not deleted. Try again.",
+                    'redirect' => $this->name,
+                    'status'   => false
                 ];
         
         die(json_encode($response));
@@ -302,14 +312,14 @@ class ModuleVideo extends Admin_Controller {
     }
 
     protected $validate = [
-        [
+        /* [
             'field' => 'title',
             'label' => 'Video Title',
             'rules' => 'required|max_length[255]',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ],
+        ], */
         [
             'field' => 'module_id',
             'label' => 'Module',
