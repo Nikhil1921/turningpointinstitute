@@ -7,8 +7,8 @@ class Module_video_model extends Admin_model
 {
 	public $table = "module_video v";
 	public $select_column = ['v.id', 'm.title module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
-	public $search_column = ['v.id', 'module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
-    public $order_column = [null, 'module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', null];
+	public $search_column = ['v.id', 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
+    public $order_column = [null, 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', null];
 	public $order = ['v.id' => 'DESC'];
 
 	public function make_query()
