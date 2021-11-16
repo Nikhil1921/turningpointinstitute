@@ -314,6 +314,10 @@ function getSubChapters(select) {
     return;
 }
 
+if (document.getElementById('ch_id') != null) {
+    $("#ch_id").change();
+}
+
 function getModuleVideos(select) {
     let dependent = $(select).data('dependent');
     let value = $(select).data('value');
@@ -402,6 +406,7 @@ function saveData() {
         $("#common-modal").modal("hide");
     }
 }
+
 var script = {
     logout: function() {
         swal({

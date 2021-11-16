@@ -32,11 +32,11 @@
 			<?= form_textarea('description', isset($data['description']) ? $data['description'] : '', 'class="form-control ckeditor" id="description"') ?>
 		</div>
 	</div>
+	<div class="col-md-12">
+		<?= form_button([ 'content' => 'Save',
+		'type'  => 'submit',
+		'class' => 'btn btn-outline-info btn-round col-md-3']) ?>
+		<?= anchor($url, 'Go back', ['class' => 'btn btn-outline-danger btn-round col-md-3']) ?>
+	</div>
 </div>
 <?= form_close() ?>
-<script>
-    var e = document.createEvent('HTMLEvents');
-    e.initEvent('change', false, true);
-    document.getElementById('ch_id').dispatchEvent(e);
-</script>
-<script src="<?= b_asset('ckeditor/ckeditor.js') ?>"></script>

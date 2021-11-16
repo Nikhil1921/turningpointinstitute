@@ -71,8 +71,9 @@ class ModuleVideo extends Admin_Controller {
             'data-title' => "View video", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
             
             if ($update)
-                $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
-                        'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+                $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-pencil" ></i>', ['class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+                /* $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
+                        'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']); */
                         
             if ($delete)
                 $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
@@ -114,7 +115,6 @@ class ModuleVideo extends Admin_Controller {
     
     public function add()
     {
-        check_ajax();
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
             $data['title'] = $this->title;
@@ -124,8 +124,10 @@ class ModuleVideo extends Admin_Controller {
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
             
-            return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
+            return $this->template->load('template', "$this->redirect/add", $data);
+            // return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
+            check_ajax();
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
                 $response = [
@@ -173,7 +175,6 @@ class ModuleVideo extends Admin_Controller {
 
     public function update($id)
     {
-        check_ajax();
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
             $data['title'] = $this->title;
@@ -184,9 +185,11 @@ class ModuleVideo extends Admin_Controller {
             $where = ['is_deleted' => 0];
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
-
-            return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
+            
+            return $this->template->load('template', "$this->redirect/update", $data);
+            // return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{
+            check_ajax();
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
                 $response = [

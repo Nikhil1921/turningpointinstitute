@@ -27,7 +27,7 @@
 						]) ?>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<!-- <div class="col-md-6">
 					<div class="form-group">
 						<?= form_label('Price', 'price') ?>
 						<?= form_input('price', isset($data['price']) ? $data['price'] : '', [
@@ -56,7 +56,7 @@
 							'maxlength' => "2"
 						]) ?>
 					</div>
-				</div>
+				</div> -->
 				<div class="col-md-12">
 					<div class="form-group">
 						<?= form_label('Details', 'details') ?>

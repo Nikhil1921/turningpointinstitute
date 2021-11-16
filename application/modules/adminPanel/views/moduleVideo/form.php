@@ -52,6 +52,11 @@
 			<?= form_textarea('guj_pdf', isset($data['guj_pdf']) ? $data['guj_pdf'] : '', 'class="form-control ckeditor" id="guj_pdf"') ?>
 		</div>
 	</div>
+	<div class="col-md-12">
+		<?= form_button([ 'content' => 'Save',
+		'type'  => 'submit',
+		'class' => 'btn btn-outline-info btn-round col-md-3']) ?>
+		<?= anchor($url, 'Go back', ['class' => 'btn btn-outline-danger btn-round col-md-3']) ?>
+	</div>
 </div>
 <?= form_close() ?>
-<script src="<?= b_asset('ckeditor/ckeditor.js') ?>"></script>

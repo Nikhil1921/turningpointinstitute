@@ -28,10 +28,10 @@ class Course extends Admin_Controller {
                 $post = [
                     'title'         => $this->input->post('title'),
                     'sub_title'     => $this->input->post('sub_title'),
-                    'discount'      => $this->input->post('discount'),
+                    'discount'      => $this->input->post('discount') ? $this->input->post('discount') : 0,
                     'details'       => $this->input->post('details'),
-                    'price'         => $this->input->post('price'),
-                    'dicount_price' => $this->input->post('dicount_price')
+                    'price'         => $this->input->post('price') ? $this->input->post('price') : 0,
+                    'dicount_price' => $this->input->post('dicount_price') ? $this->input->post('dicount_price') : 0
                 ];
                 
                 if (!$this->main->get($this->table, 'title, sub_title, price, discount, details', []))
@@ -72,7 +72,7 @@ class Course extends Admin_Controller {
                 'required' => "%s is Required"
             ]
         ],
-        [
+        /* [
             'field' => 'price',
             'label' => 'Price',
             'rules' => 'required|max_length[10]|numeric',
@@ -87,7 +87,7 @@ class Course extends Admin_Controller {
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ],
+        ], */
         [
             'field' => 'details',
             'label' => 'Details',

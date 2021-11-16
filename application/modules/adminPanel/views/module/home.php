@@ -27,7 +27,7 @@
 						<th class="target">Sr.</th>
 						<th>Title</th>
 						<th>Sub Title</th>
-						<th>Price</th>
+						<!-- <th>Price</th> -->
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

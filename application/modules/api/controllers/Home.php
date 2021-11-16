@@ -253,7 +253,7 @@ class Home extends Public_controller  {
 		get();
 		$api = authenticate($this->table);
 
-		if ($row = $this->api->get('course', 'title, sub_title, price, dicount_price, discount, details', [])) {
+		if ($row = $this->api->get('course', 'title, sub_title, details', [])) {
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Course details successfull.";
@@ -270,7 +270,7 @@ class Home extends Public_controller  {
 		get();
 		$api = authenticate($this->table);
 
-		if ($row = $this->api->getall('modules', 'id, title, sub_title, price, details', ['is_deleted' => 0])) {
+		if ($row = $this->api->getall('modules', 'id, title, sub_title, details', ['is_deleted' => 0])) {
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Module list successfull.";

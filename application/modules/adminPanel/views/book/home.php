@@ -8,14 +8,7 @@
 				</div>
 				<?php if (check_access($name, 'add')): ?>
 				<div class="col-md-6">
-					<?= form_button([
-					'content' => '<i class="fa fa-plus-square-o" ></i>Add',
-					'type'  => 'button',
-					'data-url' => base_url($url.'/add'),
-					'data-title' => "Add $title",
-					'onclick' => "getModalData(this)",
-					'class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-3'
-					]) ?>
+					<?= anchor($url.'/add', '<i class="fa fa-plus-square-o" ></i>Add', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-3']) ?>
 				</div>
 				<?php endif ?>
 			</div>

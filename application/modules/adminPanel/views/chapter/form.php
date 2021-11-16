@@ -2,6 +2,16 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group">
+            <?= form_label('Ebook', 'ebook_id') ?>
+			<select class="form-control" name="ebook_id" id="ebook_id">
+                <?php foreach($ebooks as $ebook): ?>
+				<option value="<?= e_id($ebook['id']) ?>" <?= isset($data['ebook_id']) && $data['ebook_id'] == $ebook['id'] ? 'selected' : '' ?>><?= $ebook['title'] ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="form-group">
             <?= form_label('Chapter', 'ch_id') ?>
 			<select class="form-control" name="ch_id" id="ch_id">
                 <option value="0">Main chapter</option>

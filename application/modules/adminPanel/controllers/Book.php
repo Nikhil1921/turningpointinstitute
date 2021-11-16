@@ -38,8 +38,9 @@ class Book extends Admin_Controller {
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
             if ($update) {
-                $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
-                        'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+                $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-pencil" ></i>', ['class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+                /* $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
+                        'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']); */
             }
             
             if ($delete) {
@@ -70,7 +71,6 @@ class Book extends Admin_Controller {
 
     public function add()
     {
-        check_ajax();
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
             $data['title'] = $this->title;
@@ -78,8 +78,9 @@ class Book extends Admin_Controller {
             $data['url'] = $this->redirect;
             $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0]);
             
-            return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
+            return $this->template->load('template', "$this->redirect/add", $data);
         }else{
+            check_ajax();
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
             $response = [
@@ -111,7 +112,6 @@ class Book extends Admin_Controller {
 
     public function update($id)
     {
-        check_ajax();
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
             $data['title'] = $this->title;
@@ -121,8 +121,10 @@ class Book extends Admin_Controller {
             $data['data'] = $this->main->get($this->table, 'description, ch_id, sub_ch_id, language', ['id' => d_id($id)]);
             $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0]);
             
-            return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
+            return $this->template->load('template', "$this->redirect/update", $data);
+            // return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{
+            check_ajax();
             $this->form_validation->set_rules($this->validate);
             if ($this->form_validation->run() == FALSE)
             $response = [

@@ -33,7 +33,7 @@ class Module extends Admin_Controller {
             $sub_array[] = $sr;
             $sub_array[] = $row->title;
             $sub_array[] = $row->sub_title;
-            $sub_array[] = $row->price;
+            // $sub_array[] = $row->price;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
@@ -87,7 +87,7 @@ class Module extends Admin_Controller {
                 $post = [
                     'title'     => $this->input->post('title'),
                     'sub_title' => $this->input->post('sub_title'),
-                    'price'     => $this->input->post('price'),
+                    'price'     => $this->input->post('price') ? $this->input->post('price') : 0,
                     'details'   => $this->input->post('details'),
                     'admin_id'  => $this->auth
                 ];
@@ -131,7 +131,7 @@ class Module extends Admin_Controller {
                 $post = [
                     'title'     => $this->input->post('title'),
                     'sub_title' => $this->input->post('sub_title'),
-                    'price'     => $this->input->post('price'),
+                    'price'     => $this->input->post('price') ? $this->input->post('price') : 0,
                     'details'   => $this->input->post('details'),
                     'admin_id'  => $this->auth
                 ];
@@ -194,14 +194,14 @@ class Module extends Admin_Controller {
                 'required' => "%s is Required"
             ]
         ],
-        [
+        /* [
             'field' => 'price',
             'label' => 'Price',
             'rules' => 'required|max_length[10]|numeric',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ],
+        ], */
         [
             'field' => 'details',
             'label' => 'Details',

@@ -282,12 +282,11 @@
 		<!-- Switch component js -->
 		<script src="<?= b_asset('switchery/dist/switchery.min.js') ?>"></script>
 		<script src="<?= b_asset('select2/dist/js/select2.full.min.js') ?>"></script>
-		<script type="text/javascript"
-		src="<?= b_asset('bootstrap-multiselect/dist/js/bootstrap-multiselect.js') ?>"></script>
+		<script type="text/javascript" src="<?= b_asset('bootstrap-multiselect/dist/js/bootstrap-multiselect.js') ?>"></script>
 		<script type="text/javascript" src="<?= b_asset('multiselect/js/jquery.multi-select.js') ?>"></script>
 		<script src="<?= b_asset('js/jquery.quicksearch.js') ?>"></script>
 		<script src="<?= b_asset('pages/advance-elements/select2-custom.js') ?>"></script>
-		
+		<script src="<?= b_asset('ckeditor/ckeditor.js') ?>"></script>
 		<!-- Custom js -->
 		<script src="<?= b_asset('js/pcoded.min.js') ?>"></script>
 		<script src="<?= b_asset('js/vartical-layout.min.js') ?>"></script>

@@ -13,6 +13,8 @@
 						<th>Mobile</th>
 						<th>E mail</th>
 						<th>Address</th>
+						<th class="target">Assigned</th>
+						<th class="target">Action</th>
 					</thead>
 					<tbody>
 					</tbody>

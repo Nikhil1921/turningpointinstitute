@@ -29,9 +29,9 @@ if($_SERVER['HTTP_HOST'] == 'localhost'){
     $db['default'] = array(
         'dsn'   => '',
         'hostname' => 'localhost',
-        'username' => 'turningp_turningpointinstitute',
+        'username' => 'tponline_turningpointinstitute',
         'password' => 'mXSJunT81XV5',
-        'database' => 'turningp_turningpointinstitute',
+        'database' => 'tponline_turningpointinstitute',
         'dbdriver' => 'mysqli',
         'dbprefix' => '',
         'pconnect' => FALSE,
