@@ -32,7 +32,7 @@ class Book extends Admin_Controller {
             $sub_array = [];
             $sub_array[] = $sr;
             $sub_array[] = $row->chapter;
-            $sub_array[] = $row->sub_chapter;
+            $sub_array[] = $row->sub_chapter ? $row->sub_chapter : "NA";
             $sub_array[] = $row->language;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
@@ -91,7 +91,7 @@ class Book extends Admin_Controller {
                 $post = [
                     'description'  => $this->input->post('description'),
                     'ch_id'        => d_id($this->input->post('ch_id')),
-                    'sub_ch_id'    => d_id($this->input->post('sub_ch_id')),
+                    'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
                     'language'     => $this->input->post('language')
                 ];
                 
@@ -135,7 +135,7 @@ class Book extends Admin_Controller {
                 $post = [
                     'description'  => $this->input->post('description'),
                     'ch_id'        => d_id($this->input->post('ch_id')),
-                    'sub_ch_id'    => d_id($this->input->post('sub_ch_id')),
+                    'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
                     'language'     => $this->input->post('language')
                 ];
                 
@@ -196,14 +196,14 @@ class Book extends Admin_Controller {
                 'required' => "%s is Required"
             ]
         ],
-        [
+        /* [
             'field' => 'sub_ch_id',
             'label' => 'Sub Chapter',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ],
+        ], */
         [
             'field' => 'description',
             'label' => 'Description',

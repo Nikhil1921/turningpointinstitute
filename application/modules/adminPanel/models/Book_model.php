@@ -15,9 +15,9 @@ class Book_model extends Admin_model
 	{  
 		$this->db->select($this->select_column)
             	 ->from($this->table)
-                 ->where(['c.is_deleted' => 0, 'sc.is_deleted' => 0, 'b.is_deleted' => 0])
-                 ->join('chapters c', 'c.id = b.ch_id')
-                 ->join('chapters sc', 'sc.id = b.sub_ch_id');
+                 ->where(['c.is_deleted' => 0, 'b.is_deleted' => 0])
+                 ->join('chapters c', 'c.id = b.ch_id', 'left')
+                 ->join('chapters sc', 'sc.id = b.sub_ch_id', 'left');
 
         $this->datatable();
 	}
@@ -26,9 +26,9 @@ class Book_model extends Admin_model
 	{
 		return $this->db->select('b.id')
 		            	->from($this->table)
-                        ->where(['c.is_deleted' => 0, 'sc.is_deleted' => 0, 'b.is_deleted' => 0])
-                        ->join('chapters c', 'c.id = b.ch_id')
-                        ->join('chapters sc', 'sc.id = b.sub_ch_id')
+                        ->where(['c.is_deleted' => 0, 'b.is_deleted' => 0])
+                        ->join('chapters c', 'c.id = b.ch_id', 'left')
+                        ->join('chapters sc', 'sc.id = b.sub_ch_id', 'left')
 		            	->get()
 						->num_rows();
 	}

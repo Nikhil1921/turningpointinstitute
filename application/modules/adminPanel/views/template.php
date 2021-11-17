@@ -291,6 +291,6 @@
 		<script src="<?= b_asset('js/pcoded.min.js') ?>"></script>
 		<script src="<?= b_asset('js/vartical-layout.min.js') ?>"></script>
 		<script src="<?= b_asset('js/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
-		<script src="<?= b_asset('js/script.js') ?>"></script>
+		<script src="<?= b_asset('js/script.js?v=<?= time() ?>') ?>"></script>
 	</body>
 </html>

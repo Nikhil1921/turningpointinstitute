@@ -62,4 +62,15 @@ class Student_model extends Admin_model
 
 		return $this->db->trans_complete();
 	}
+
+	public function followup_list($id)
+	{
+		return $this->db->select('remark, f.status, created_date, created_time, u.name')
+						->from('follow_ups f')
+						->where(['stu_id' => d_id($id)])
+						->join('users u', 'u.id = f.created_by')
+						->order_by('f.id DESC')
+						->get()
+						->result_array();
+	}
 }

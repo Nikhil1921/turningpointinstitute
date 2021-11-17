@@ -141,17 +141,4 @@ class FreeStudents extends Admin_Controller {
             die(json_encode($response));
         }
     }
-
-    public function followup_list($id)
-    {
-        check_ajax();
-
-        $data['name'] = $this->name;
-        $data['title'] = $this->title;
-        $data['operation'] = 'view';
-        $data['url'] = $this->redirect;
-        // $data['follows'] = $this->main->getall('follow_ups', 'id, remark, status');
-
-        return $this->load->view("$this->redirect/followup_list", $data);
-    }
 }

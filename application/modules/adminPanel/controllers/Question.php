@@ -30,18 +30,17 @@ class Question extends Admin_Controller {
         $sr = $_POST['start'] + 1;
         $data = [];
         foreach($fetch_data as $row)
-        {  
+        {
             $sub_array = [];
             $sub_array[] = $sr;
-            $sub_array[] = $row->question;
+            $sub_array[] = '<span class="'.($row->language == 'Hindi' ? 'hindi-class' : 'gujarati-class').'">'.$row->question.'</span>';
             $sub_array[] = $row->answer;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
-            if ($update) {
+            if ($update)
                 $action .= form_button(['content' => '<i class="fa fa-pencil" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/update/'.e_id($row->id)),
                         'data-title' => "Update $this->title", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
-            }
             
             if ($delete) {
                 $action .= form_open($this->redirect.'/delete', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id)]).
@@ -98,14 +97,14 @@ class Question extends Admin_Controller {
                     'options'   => $this->input->post('options'),
                     'language'  => $this->input->post('language'),
                     'test_type' => $this->input->post('test_type'),
-                    'answer'    => $this->input->post('answer')
+                    'answer'    => json_encode($this->input->post('answer'))
                 ];
                 
                 if ($this->main->add($post, $this->table))
-                $response = [
-                    'message' => "$this->title added.",
-                    'status' => true
-                ];
+                    $response = [
+                        'message' => "$this->title added.",
+                        'status' => true
+                    ];
                 else
                     $response = [
                         'message' => "$this->title not added. Try again.",
@@ -146,7 +145,7 @@ class Question extends Admin_Controller {
                     'options'   => $this->input->post('options'),
                     'language'  => $this->input->post('language'),
                     'test_type' => $this->input->post('test_type'),
-                    'answer'    => $this->input->post('answer')
+                    'answer'    => json_encode($this->input->post('answer'))
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -278,18 +277,18 @@ class Question extends Admin_Controller {
             ]
         ],
         [
-            'field' => 'answer',
+            'field' => 'answer[]',
             'label' => 'Answer',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
             ]
         ],
-        [
+        /* [
             'field' => 'options',
             'label' => 'Options',
             'rules' => 'callback_options_check'
-        ],
+        ], */
         [
             'field' => 'language',
             'label' => 'Language',

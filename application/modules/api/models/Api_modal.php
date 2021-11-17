@@ -45,6 +45,15 @@ class Api_modal extends Public_model
 						->result_array();
 	}
 
+	public function chapter_list()
+	{
+		return $this->db->select("id, title, ch_id")
+						->from('chapters')
+						->where(['ebook_id' => $this->input->get('book_id'), 'is_deleted' => 0])
+						->get()
+						->result_array();
+	}
+
 	public function question_list()
 	{
 		return array_map(function($arr){

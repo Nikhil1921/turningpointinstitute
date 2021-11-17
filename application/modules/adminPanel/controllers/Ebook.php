@@ -108,7 +108,6 @@ class Ebook extends Admin_Controller {
                         ];
                 else{
                     $post = [
-                        'book'       => "Pending",
                         'title'      => $this->input->post('title'),
                         'price'      => $this->input->post('price'),
                         'discount'   => $this->input->post('discount'),

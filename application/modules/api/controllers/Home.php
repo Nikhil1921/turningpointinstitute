@@ -98,6 +98,23 @@ class Home extends Public_controller  {
 		}
 	}
 
+	public function chapter_list()
+	{
+		get();
+		verifyRequiredParams(['book_id']);
+
+		if ($row = $this->api->chapter_list()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Chapter list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Chapter list not successfull. Try again.";
+            echoResponse(400, $response);
+		}
+	}
+
 	public function profile()
 	{
 		get();

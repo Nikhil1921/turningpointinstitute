@@ -268,6 +268,11 @@ function addMenu() {
     $('#view-menu').append(`<div class="row" id="menu_${menu}"><div class="col-md-5"><div class="form-group"> <input type="text" name="sub_menu[]" class="form-control form-control-round" placeholder="Sub Menu Name"></div></div><div class="col-md-5"><div class="form-group"> <input type="text" name="sub_menu_url[]" class="form-control form-control-round" placeholder="Sub Menu URL"></div></div><div class="col-md-2"><div class="form-group"> <button type="button" class="btn btn-danger btn-outline-danger waves-effect btn-round btn-block float-right" onclick="removeMenu('menu_${menu}')">Remove</button></div></div></div>`);
 }
 
+function addAnswer() {
+    let answer = $("#view-answer").children().length + 1;
+    $('#view-answer').append(`<div class="row" id="answer_${answer}"> <div class="col-md-10"> <div class="form-group"> <input type="text" name="answer[]" class="form-control form-control-round" placeholder="Answer"></div></div><div class="col-md-2"> <div class="form-group"> <button type="button" class="btn btn-danger btn-outline-danger waves-effect btn-round btn-block float-right" onclick="removeMenu('answer_${answer}')">Remove</button></div></div></div>`);
+}
+
 function addFeature() {
     let menu = $("#view-menu").children().length + 1;
     $('#view-menu').append(`<div class="row" id="batch_fecherd_${menu}"><div class="col-md-10"><div class="form-group"><input type="text" name="batch_fecherd[]" class="form-control form-control-round" placeholder="Feature"></div></div><div class="col-md-2"><div class="form-group"><button type="button" class="btn btn-danger btn-outline-danger waves-effect btn-round btn-block float-right" onclick="removeMenu('batch_fecherd_${menu}')">Remove</button></div></div></div>`);

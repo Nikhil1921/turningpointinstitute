@@ -67,6 +67,20 @@ class Admin_Controller extends MY_Controller
         die(json_encode(['chapters' => $chapters]));
     }
 
+    public function followup_list($id)
+    {
+        check_ajax();
+
+        $data['name'] = $this->name;
+        $data['title'] = $this->title;
+        $data['operation'] = 'view';
+        $data['url'] = $this->redirect;
+        $this->load->model('student_model');
+        $data['follows'] = $this->student_model->followup_list($id);
+
+        return $this->load->view("freeStudents/followup_list", $data);
+    }
+
 	public function error_404()
 	{
 		$data['name'] = 'error 404';

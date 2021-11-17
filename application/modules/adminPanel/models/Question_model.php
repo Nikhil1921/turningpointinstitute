@@ -6,7 +6,7 @@
 class Question_model extends Admin_model
 {
 	public $table = "questions q";
-	public $select_column = ['q.id', 'q.question', 'q.answer'];
+	public $select_column = ['q.id', 'q.question', 'q.answer', 'q.language'];
 	public $search_column = ['q.id', 'q.question', 'q.answer'];
     public $order_column = [null, 'q.question', 'q.answer', null];
 	public $order = ['q.id' => 'DESC'];
