@@ -103,7 +103,20 @@ class Home extends Public_controller  {
 		get();
 		verifyRequiredParams(['book_id']);
 
-		if ($row = $this->api->chapter_list()) {
+		if ($row = $this->api->chapter_list($this->input->get('ch_id'))) {
+			$row = array_map(function($arr){
+				$ch_id = $arr['ch_id'] == 0 ? $arr['id'] : $arr['ch_id'];
+				$sc_id = $arr['ch_id'] == 0 ? $arr['ch_id'] : $arr['id'];
+				
+				$return = [
+						'id' => $arr['id'],
+						'title' => $arr['title'],
+						'ch_id' => $arr['ch_id'],
+						'books' => $this->api->get_book($ch_id, $sc_id),
+					];
+				$return['sub_ch'] = $arr['ch_id'] == 0 ? $this->api->chapter_list($arr['id']) : [];
+				return $return;
+			}, $row);
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Chapter list successfull.";
@@ -308,11 +321,28 @@ class Home extends Public_controller  {
 		if ($row = $this->api->video_list()) {
 			$response["row"] = $row;
 			$response["valid"] = true;
-            $response['message'] = "Module list successfull.";
+            $response['message'] = "Video list successfull.";
             echoResponse(200, $response);
 		}else{
 			$response["valid"] = false;
-            $response['message'] = "Module list not successfull. Try again.";
+            $response['message'] = "Video list not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
+	public function free_video_list()
+	{
+		get();
+		$api = authenticate($this->table);
+
+		if ($row = $this->api->free_video_list()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Video list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Video list not successfull. Try again.";
             echoResponse(200, $response);
 		}
 	}
@@ -324,6 +354,7 @@ class Home extends Public_controller  {
 		verifyRequiredParams(['language', 'video_id', 'test_type']);
 
 		if ($row = $this->api->question_list()) {
+
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Question list successfull.";

@@ -46,12 +46,23 @@ class Api_modal extends Public_model
 						->result_array();
 	}
 
-	public function chapter_list()
+	public function chapter_list($ch_id=0)
 	{
-		return $this->db->select("id, title, ch_id")
-						->from('chapters')
-						->where(['ebook_id' => $this->input->get('book_id'), 'is_deleted' => 0])
-						->get()
+		$this->db->select("id, title, ch_id")
+				 ->from('chapters')
+				 ->where(['ebook_id' => $this->input->get('book_id'), 'is_deleted' => 0, 'ch_id' => $ch_id]);
+
+		return $this->db->get()
+						->result_array();
+	}
+
+	public function get_book($ch_id, $sc_id=0)
+	{
+		$this->db->select("language, description")
+				 ->from('books')
+				 ->where(['sub_ch_id' => $sc_id, 'is_deleted' => 0, 'ch_id' => $ch_id]);
+
+		return $this->db->get()
 						->result_array();
 	}
 
@@ -61,15 +72,22 @@ class Api_modal extends Public_model
 			return [
 						'id' => $arr['id'],
 						'question' => $arr['question'],
-						'options' => array_map(function($op){
-							return ['option' => $op];
-						}, explode(',', $arr['options'])),
-						'answer' => $arr['answer']
+						'answer' => json_decode($arr['answer'])
 					];
-		}, $this->db->select("id, question, options, answer")
+		}, $this->db->select("id, question, answer")
 						->from('questions')
 						->where(['is_deleted' => 0, 'language' => $this->input->get('language'), 'video_id' => $this->input->get('video_id'), 'test_type' => $this->input->get('test_type')])
 						->get()
 						->result_array());
+	}
+
+	public function free_video_list()
+	{
+		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, hindi_pdf, guj_pdf, video_no")
+						->from('module_video')
+						->where(['is_deleted' => 0, 'is_free' => 1])
+						->order_by('id ASC')
+						->get()
+						->result_array();
 	}
 }
