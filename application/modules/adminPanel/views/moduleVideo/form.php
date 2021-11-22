@@ -23,14 +23,14 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-4 mt-4">
 		<div class="form-group">
-			<?= form_label('<i class="fa fa-video-camera" ></i>Video', 'video', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']) ?>
+			<?= form_label('<i class="fa fa-image" ></i> Image', 'image', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']) ?>
             <?= form_input([
             'style' => "display: none;",
             'type' => "file",
-            'id' => "video",
-            'name' => "video"
+            'id' => "image",
+            'name' => "image"
             ]) ?>
 		</div>
 	</div>
@@ -38,18 +38,6 @@
 		<div class="form-group">
 			<?= form_label('Details', 'details') ?>
 			<?= form_textarea('details', isset($data['details']) ? $data['details'] : '', 'class="form-control" id="details"') ?>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="form-group">
-			<?= form_label('Hindi Assignment', 'hindi_pdf') ?>
-			<?= form_textarea('hindi_pdf', isset($data['hindi_pdf']) ? $data['hindi_pdf'] : '', 'class="form-control ckeditor" id="hindi_pdf"') ?>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="form-group">
-			<?= form_label('Gujarati Assignment', 'guj_pdf') ?>
-			<?= form_textarea('guj_pdf', isset($data['guj_pdf']) ? $data['guj_pdf'] : '', 'class="form-control ckeditor" id="guj_pdf"') ?>
 		</div>
 	</div>
 	<div class="col-md-12">

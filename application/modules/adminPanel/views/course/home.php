@@ -5,9 +5,34 @@
 			<h5 class="title">Update <?= $title ?></h5>
 		</div>
 		<div class="card-body">
+			<?php if(isset($data['title'])): ?>
+			<?= form_open_multipart("$url/uploadVideo", 'id="upload-form"') ?>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<?= form_label('<i class="fa fa-video-camera" ></i>Upload introduction video', 'video', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block col-md-8']) ?>
+						<?= form_input([
+						'style' => "display: none;",
+						'type' => "file",
+						'id' => "video",
+						'onchange' => 'uploadIntroVideo(this.form)',
+						'name' => "video"
+						]) ?>
+					</div>
+					<!-- Progress bar -->
+					<div class="progress" style="display: none">
+						<div class="progress-bar"></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<video src="<?= base_url('uploads/'.$data['video']) ?>" autoplay height="150" muted></video>
+				</div>
+			</div>
+			<?= form_close() ?>
+			<?php endif ?>
 			<?= form_open($url) ?>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<div class="form-group">
 						<?= form_label('Title', 'title') ?>
 						<?= form_input('title', isset($data['title']) ? $data['title'] : '', [
@@ -17,7 +42,7 @@
 						]) ?>
 					</div>
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<div class="form-group">
 						<?= form_label('Sub title', 'sub_title') ?>
 						<?= form_input('sub_title', isset($data['sub_title']) ? $data['sub_title'] : '', [

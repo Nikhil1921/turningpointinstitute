@@ -73,4 +73,20 @@ class Student_model extends Admin_model
 						->get()
 						->result_array();
 	}
+
+	public function counter($status)
+	{
+		$this->db->select('s.id')
+				 ->from($this->table)
+				 ->where(['s.is_deleted' => 0, 'registered' => $status]);
+
+		if (auth()->role != 'Super Admin')
+			if ($status == 0)
+				$this->db->where('s.assign_id', $this->auth);
+			else
+				$this->db->where('s.admin_id', $this->auth);
+
+		return $this->db->get()
+						->num_rows();
+	}
 }

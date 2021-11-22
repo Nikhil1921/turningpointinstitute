@@ -37,33 +37,13 @@ class ModuleVideo extends Admin_Controller {
             $sub_array[] = $row->title;
             $sub_array[] = $row->details;
             
-            /* if ($add)
-                $sub_array[] = file_exists($this->path.$row->hindi_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->hindi_pdf),
-                'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
-                form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'hindi_pdf', 'file' => $row->hindi_pdf]).
-                form_label('<i class="fa fa-upload" ></i>', 'hindi_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
-                form_input([
-                    'style' => "display: none;",
-                    'type' => "file",
-                    'id' => "hindi_".$row->id,
-                    'name' => "pdf",
-                    'onchange' => "bulkUpload(this.form)"
-                ]).
-                form_close();
-            
             if ($add)
-                $sub_array[] = file_exists($this->path.$row->guj_pdf) ? '<div class="icon-btn">'.form_button(['content' => '<i class="fa fa-file-text-o" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/viewPdf/'.$row->guj_pdf),
-                'data-title' => "View PDF", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon'])."</div>" : 
-                form_open_multipart("$this->redirect/pdfUpload", '', ['id' => e_id($row->id), 'lang' => 'guj_pdf', 'file' => $row->guj_pdf]).
-                form_label('<i class="fa fa-upload" ></i>', 'guj_'.$row->id, ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']).
-                form_input([
-                    'style' => "display: none;",
-                    'type' => "file",
-                    'id' => "guj_".$row->id,
-                    'name' => "pdf",
-                    'onchange' => "bulkUpload(this.form)"
-                ]).
-                form_close(); */
+                $sub_array[] = form_open($this->redirect.'/freeVideo', 'id="'.e_id($row->id).'"', ['id' => e_id($row->id), 'free' => ($row->is_free ? 0 : 1)]).
+                           form_button([ 'content' => ($row->is_free ? 'YES' : 'NO'),
+                                'type'  => 'button',
+                                'class' => 'btn btn-'.($row->is_free ? 'success' : 'danger').' btn-outline-'.($row->is_free ? 'success' : 'danger').' btn-block btn-mini waves-effect waves-light btn-round', 
+                                'onclick' => "script.freeVideo(".e_id($row->id)."); return false;"]).
+                           form_close();
             
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             
@@ -106,12 +86,6 @@ class ModuleVideo extends Admin_Controller {
         $data['data'] = $this->main->get($this->table, 'CONCAT("'.$this->path.'", video) video', ['id' => d_id($id)]);
         return $this->load->view("$this->redirect/view", $data);
     }
-
-    public function viewPdf($pdf)
-    {
-        check_ajax();
-        return $this->load->view("$this->redirect/viewPdf", ['pdf' => $this->path.$pdf]);
-    }
     
     public function add()
     {
@@ -125,7 +99,6 @@ class ModuleVideo extends Admin_Controller {
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
             
             return $this->template->load('template', "$this->redirect/add", $data);
-            // return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
             check_ajax();
             $this->form_validation->set_rules($this->validate);
@@ -135,44 +108,83 @@ class ModuleVideo extends Admin_Controller {
                         'status' => false
                     ];
             else{
-                $video = $this->uploadVideo();
-                $post = [
+                $image = $this->uploadImage("image");
+                
+                if ($image['error'])
+                    $response = [
+                        'message' => $image['message'],
+                        'status'   => false
+                    ];
+                else{
+                    $post = [
                         'module_id'  => d_id($this->input->post('module_id')),
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
-                        'hindi_pdf'  => $this->input->post('hindi_pdf'),
-                        'guj_pdf'    => $this->input->post('guj_pdf'),
                         'video_no'   => $this->input->post('video_no'),
-                        // 'video'      => $video['message'],
+                        'image'      => $image['message'],
                         'admin_id'   => $this->auth
                     ];
-                if ($video['error'])
-                    $post['video'] = 'No Video';
-                    /* $response = [
-                            'message' => $video['message'],
-                            'status' => false
-                        ]; */
-                else
-                    $post['video'] = $video['message'];
 
                 if ($id = $this->main->add($post, $this->table))
                     $response = [
                         'message'   => "$this->title added.",
-                        'redirect'  => $this->name,
+                        'redirect'  => "$this->name/upload-video/".e_id($id),
                         'status'    => true
                     ];
                 else
                     $response = [
                         'message'  => "$this->title not added. Try again.",
-                        'redirect' => $this->name,
                         'status'   => false
                     ];
+                }
             }
 
             die(json_encode($response));
         }
     }
 
+    public function upload_video($id)
+    {
+        if ($this->input->server('REQUEST_METHOD') === 'GET') {
+            $data['name'] = $this->name;
+            $data['title'] = $this->title;
+            $data['operation'] = 'upload video';
+            $data['url'] = $this->redirect;
+            $data['id'] = $id;
+            $data['data'] = $this->main->get($this->table, 'video', ['id' => d_id($id)]);
+            
+            return $this->template->load('template', "$this->redirect/upload_video", $data);
+        }else{
+            check_ajax();
+            
+            $video = $this->uploadVideo();
+            if ($video['error'])
+                die(json_encode(['message' => $video['message'],'status' => false]));
+            else
+                if ($this->input->post('video') && file_exists($this->path.$this->input->post('video'))) 
+                    unlink($this->path.$this->input->post('video'));
+            
+            $post = [
+                    'video'      => $video['message'],
+                    'admin_id'   => $this->auth
+                ];
+            
+            if ($this->main->update(['id' => d_id($id)], $post, $this->table))
+                $response = [
+                    'message'  => "$this->title updated.",
+                    'redirect'  => "$this->name/upload-assignments/$id",
+                    'status'   => true
+                ];
+            else
+                $response = [
+                    'message'  => "$this->title not updated. Try again.",
+                    'status'   => false
+                ];
+
+            die(json_encode($response));
+        }
+    }
+    
     public function update($id)
     {
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
@@ -181,7 +193,7 @@ class ModuleVideo extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id, hindi_pdf, guj_pdf, video_no', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id, image, video_no', ['id' => d_id($id)]);
             $where = ['is_deleted' => 0];
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
@@ -197,23 +209,21 @@ class ModuleVideo extends Admin_Controller {
                         'status' => false
                     ];
             else{
-                if ($_FILES['video']['name']) {
-                    $video = $this->uploadVideo();
-                    if ($video['error'])
-                        die(json_encode(['message' => $video['message'],'status' => false]));
+                if ($_FILES['image']['name']) {
+                    $image = $this->uploadImage('image');
+                    if ($image['error'])
+                        die(json_encode(['message' => $image['message'],'status' => false]));
                     else
-                        if (file_exists($this->path.$this->input->post('video'))) 
-                            unlink($this->path.$this->input->post('video'));
+                        if ($this->input->post('image') && file_exists($this->path.$this->input->post('image'))) 
+                            unlink($this->path.$this->input->post('image'));
                 }else
-                    $video['message'] = $this->input->post('video');
+                    $image['message'] = $this->input->post('video');
                 
                 $post = [
                         'module_id'  => d_id($this->input->post('module_id')),
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
-                        'video'      => $video['message'],
-                        'hindi_pdf'  => $this->input->post('hindi_pdf'),
-                        'guj_pdf'    => $this->input->post('guj_pdf'),
+                        'image'      => $image['message'],
                         'video_no'   => $this->input->post('video_no'),
                         'admin_id'   => $this->auth
                     ];
@@ -221,16 +231,51 @@ class ModuleVideo extends Admin_Controller {
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
                     $response = [
                         'message'  => "$this->title updated.",
-                        'redirect' => $this->name,
+                        'redirect'  => "$this->name/upload-video/$id",
                         'status'   => true
                     ];
                 else
                     $response = [
                         'message'  => "$this->title not updated. Try again.",
-                        'redirect' => $this->name,
                         'status'   => false
                     ];
             }
+
+            die(json_encode($response));
+        }
+    }
+
+    public function upload_assignments($id)
+    {
+        if ($this->input->server('REQUEST_METHOD') === 'GET') {
+            $data['name'] = $this->name;
+            $data['title'] = $this->title;
+            $data['operation'] = 'upload assignments';
+            $data['url'] = $this->redirect;
+            $data['id'] = $id;
+            $data['data'] = $this->main->get($this->table, 'hindi_pdf, guj_pdf', ['id' => d_id($id)]);
+            
+            return $this->template->load('template', "$this->redirect/upload_assignments", $data);
+        }else{
+            check_ajax();
+                
+            $post = [
+                    'hindi_pdf'  => $this->input->post('hindi_pdf'),
+                    'guj_pdf'    => $this->input->post('guj_pdf'),
+                    'admin_id'   => $this->auth
+                ];
+            
+            if ($this->main->update(['id' => d_id($id)], $post, $this->table))
+                $response = [
+                    'message'  => "$this->title updated.",
+                    'redirect'  => "$this->name",
+                    'status'   => true
+                ];
+            else
+                $response = [
+                    'message'  => "$this->title not updated. Try again.",
+                    'status'   => false
+                ];
 
             die(json_encode($response));
         }
@@ -295,6 +340,32 @@ class ModuleVideo extends Admin_Controller {
         die(json_encode($response));
     }
 
+    public function freeVideo()
+    {
+        check_ajax();
+        $this->form_validation->set_rules('id', 'id', 'required|numeric');
+        $this->form_validation->set_rules('free', 'free', 'required|numeric');
+        if ($this->form_validation->run() == FALSE)
+            $response = [
+                        'message' => "Some required fields are missing.",
+                        'message' => validation_errors(),
+                        'status' => false
+                    ];
+        else
+            if ($this->main->update(['id' => d_id($this->input->post('id'))], ['is_free' => $this->input->post('free'), 'admin_id' => $this->auth], $this->table))
+                $response = [
+                    'message'  => "$this->title updated.",
+                    'status'   => true
+                ];
+            else
+                $response = [
+                    'message'  => "$this->title not updated. Try again.",
+                    'status'   => false
+                ];
+        
+        die(json_encode($response));
+    }
+
     protected function uploadVideo()
     {
         $this->load->library('upload');
@@ -315,14 +386,14 @@ class ModuleVideo extends Admin_Controller {
     }
 
     protected $validate = [
-        /* [
+        [
             'field' => 'title',
             'label' => 'Video Title',
             'rules' => 'required|max_length[255]',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ], */
+        ],
         [
             'field' => 'module_id',
             'label' => 'Module',

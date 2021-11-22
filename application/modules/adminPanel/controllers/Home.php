@@ -11,7 +11,8 @@ class Home extends Admin_Controller {
 		$data['title'] = 'dashboard';
 		$data['url'] = $this->redirect;
         $this->load->model('student_model');
-        $data['student'] = $this->student_model->count();
+        $data['student'] = $this->student_model->counter(1);
+        $data['freeStudents'] = $this->student_model->counter(0);
         $this->load->model('ebook_model');
         $data['ebook'] = $this->ebook_model->count();
         $this->load->model('module_model');

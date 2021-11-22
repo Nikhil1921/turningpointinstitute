@@ -17,8 +17,8 @@ class Question_model extends Admin_model
             	 ->from($this->table)
             	 ->where(['q.is_deleted' => 0]);
 
-        if (auth()->role !== "Super Admin")
-        	$this->db->where(['q.admin_id' => $this->auth]);
+        /* if (auth()->role !== "Super Admin")
+        	$this->db->where(['q.admin_id' => $this->auth]); */
 
         $this->datatable();
 	}
@@ -29,8 +29,8 @@ class Question_model extends Admin_model
 		         ->from($this->table)
 		         ->where(['q.is_deleted' => 0]);
 
-		if (auth()->role !== "Super Admin")
-        	$this->db->where(['q.admin_id' => $this->auth]);
+		/* if (auth()->role !== "Super Admin")
+        	$this->db->where(['q.admin_id' => $this->auth]); */
 		            	
 		return $this->db->get()->num_rows();
 	}

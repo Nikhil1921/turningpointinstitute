@@ -16,8 +16,8 @@ class Module_model extends Admin_model
 		$this->db->select($this->select_column)
             	 ->from($this->table)
 				 ->where('m.is_deleted', 0);
-		if (auth()->role != 'Super Admin')
-			$this->db->where('m.admin_id', $this->auth);
+		/* if (auth()->role != 'Super Admin')
+			$this->db->where('m.admin_id', $this->auth); */
         
         $this->datatable();
 	}
@@ -27,8 +27,8 @@ class Module_model extends Admin_model
 		$this->db->select('m.id')
 				 ->from($this->table)
 				 ->where('m.is_deleted', 0);
-		if (auth()->role != 'Super Admin')
-			$this->db->where('m.admin_id', $this->auth);
+		/* if (auth()->role != 'Super Admin')
+			$this->db->where('m.admin_id', $this->auth); */
 
 		return $this->db->get()
 						->num_rows();

@@ -36,7 +36,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "OTP send not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -64,7 +64,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Invalid OTP. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -79,7 +79,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Banner list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -94,7 +94,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Ebook list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -111,7 +111,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Chapter list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -130,7 +130,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Profile not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -143,13 +143,13 @@ class Home extends Public_controller  {
 		if($this->main->check($this->table, ['mobile' => $this->input->post('mobile'), 'id != ' => $api], 'id')){
 			$response["valid"] = false;
             $response['message'] = "Mobile already in use.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 		
 		if($this->main->check($this->table, ['email' => $this->input->post('email'), 'id != ' => $api], 'id')){
 			$response["valid"] = false;
             $response['message'] = "Email already in use.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 		
 		$post = [
@@ -166,7 +166,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Update profile not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -197,7 +197,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Buy ebook not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -212,7 +212,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Membership list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -239,7 +239,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Buy membership not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -261,7 +261,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Free membership not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -270,7 +270,7 @@ class Home extends Public_controller  {
 		get();
 		$api = authenticate($this->table);
 
-		if ($row = $this->api->get('course', 'title, sub_title, details', [])) {
+		if ($row = $this->api->get('course', "title, sub_title, details, CONCAT('".base_url('uploads/')."', video) video", [])) {
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Course details successfull.";
@@ -278,7 +278,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Course details not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -295,7 +295,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Module list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -313,7 +313,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Module list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 
@@ -331,7 +331,7 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Question list not successfull. Try again.";
-            echoResponse(400, $response);
+            echoResponse(200, $response);
 		}
 	}
 }

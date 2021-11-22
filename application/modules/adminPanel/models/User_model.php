@@ -17,8 +17,8 @@ class User_model extends Admin_model
             	 ->from($this->table)
             	 ->where(['u.is_deleted' => 0, 'u.id != ' => $this->auth]);
         
-        if (auth()->role !== "Super Admin")
-            $this->db->where(['u.admin_id' => $this->auth]);
+        /* if (auth()->role !== "Super Admin")
+            $this->db->where(['u.admin_id' => $this->auth]); */
         
         $this->db->where_not_in('u.role', ['Super Admin', 'User'])
                  ->join('role r', 'r.id = u.sub_role');
@@ -32,8 +32,8 @@ class User_model extends Admin_model
 						->from($this->table)
 						->where(['u.is_deleted' => 0, 'u.id != ' => $this->auth]);
         
-        if (auth()->role !== "Super Admin")
-            $this->db->where(['u.admin_id' => $this->auth]);
+        /* if (auth()->role !== "Super Admin")
+            $this->db->where(['u.admin_id' => $this->auth]); */
                         
 		return $this->db->where_not_in('u.role', ['Super Admin', 'User'])
                         ->join('role r', 'r.id = u.sub_role')

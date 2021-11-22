@@ -34,7 +34,7 @@ class FreeStudents extends Admin_Controller {
             $sub_array[] = $row->mobile;
             $sub_array[] = $row->email;
             $sub_array[] = $row->address;
-            $sub_array[] = $row->assigned ? $row->assigned : 'Not Assigned';
+            if (auth()->role == 'Super Admin') $sub_array[] = $row->assigned ? $row->assigned : 'Not Assigned';
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             $action .= form_button(['content' => '<i class="fa fa-eye" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/followup_list/'.e_id($row->id)),

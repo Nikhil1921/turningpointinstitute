@@ -48,6 +48,7 @@ var table = $('.datatable').DataTable({
         type: "POST",
         data: function(data) {
             data.status = $("#status").val();
+            data.staff_id = $("#staff_id").val();
         },
         complete: function(response) {},
     },

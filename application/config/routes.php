@@ -23,3 +23,4 @@ $route[ADMIN.'/module']['post'] = ADMIN.'/module/get';
 $route[ADMIN.'/chapter']['post'] = ADMIN.'/chapter/get';
 $route[ADMIN.'/subChapter']['post'] = ADMIN.'/subChapter/get';
 $route[ADMIN.'/book']['post'] = ADMIN.'/book/get';
+$route[ADMIN.'/followUp']['post'] = ADMIN.'/followUp/get';

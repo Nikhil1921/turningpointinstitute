@@ -6,7 +6,7 @@
 class Module_video_model extends Admin_model
 {
 	public $table = "module_video v";
-	public $select_column = ['v.id', 'm.title module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
+	public $select_column = ['v.id', 'm.title module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', 'v.is_free'];
 	public $search_column = ['v.id', 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
     public $order_column = [null, 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', null];
 	public $order = ['v.id' => 'DESC'];
@@ -17,8 +17,8 @@ class Module_video_model extends Admin_model
             	 ->from($this->table)
 				 ->where('v.is_deleted', 0)
 				 ->join('modules m', 'm.id = v.module_id');
-		if (auth()->role != 'Super Admin')
-			$this->db->where('v.admin_id', $this->auth);		 
+		/* if (auth()->role != 'Super Admin')
+			$this->db->where('v.admin_id', $this->auth); */
         
         $this->datatable();
 	}
@@ -29,8 +29,8 @@ class Module_video_model extends Admin_model
 				 ->from($this->table)
 				 ->where('v.is_deleted', 0)
 				 ->join('modules m', 'm.id = v.module_id');
-		if (auth()->role != 'Super Admin')
-			$this->db->where('v.admin_id', $this->auth);
+		/* if (auth()->role != 'Super Admin')
+			$this->db->where('v.admin_id', $this->auth); */
 
 		return $this->db->get()
 						->num_rows();

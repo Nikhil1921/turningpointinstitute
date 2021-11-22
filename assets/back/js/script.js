@@ -146,6 +146,10 @@ $(document).ready(function() {
 
     $('form').submit(function(e) {
         e.preventDefault();
+        if (document.getElementsByClassName("ckeditor")) {
+            for (var name in CKEDITOR.instances)
+                CKEDITOR.instances[name].updateElement();
+        }
         $.ajax({
             url: $(this).attr('action'),
             type: 'post',
@@ -171,7 +175,7 @@ $(document).ready(function() {
                     },
                     function() {
                         if (result.redirect) {
-                            window.location.href = result.redirect;
+                            window.location.href = $("#base_url").val() + result.redirect;
                         }
                     });
             },
@@ -260,6 +264,10 @@ function getModalData(anchor) {
 
 $(document).on('submit', form, function(e) {
     e.preventDefault();
+    if (document.getElementsByClassName("ckeditor")) {
+        for (var name in CKEDITOR.instances)
+            CKEDITOR.instances[name].updateElement();
+    }
     saveData();
 });
 
@@ -394,11 +402,10 @@ function saveData() {
                             var el = document.createElement('button');
                             el.dataset['url'] = result.next_step;
                             el.dataset['title'] = result.title;
-                            console.log(el)
                             getModalData(el);
                         }
                         if (result.redirect)
-                            window.location = result.redirect;
+                            window.location = $("#base_url").val() + result.redirect;
                         else
                             return true;
                     });
@@ -499,6 +506,42 @@ var script = {
                     }
                 });
             });
+    },
+    freeVideo: function(id) {
+        swal({
+                title: "Are you sure?",
+                text: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn btn-outline-danger",
+                confirmButtonText: "Yes",
+                cancelButtonText: 'No',
+                closeOnConfirm: false
+            },
+            function() {
+                let form = $("#" + id);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'post',
+                    data: form.serialize(),
+                    dataType: 'json',
+                    cache: false,
+                    async: false,
+                    beforeSend: function() {
+                        $('.theme-loader').fadeIn();
+                    },
+                    complete: function() {
+                        $('.theme-loader').fadeOut();
+                    },
+                    success: function(result) {
+                        table.ajax.reload();
+                        swal(`${(result.status) ? "Success" : "Error"}`, result.message, result.status ? "success" : "error");
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        notify("Error : ", "Something is not going good. Try again.", "danger");
+                    }
+                });
+            });
     }
 };
 
@@ -512,3 +555,58 @@ $(document).on('change', '#language', function() {
         $('#question').removeClass('hindi-class');
     }
 });
+
+$(".follow-status").click(function() {
+    $('#status').val($(this).html());
+    table.ajax.reload();
+});
+
+$("#staff_id").change(function() {
+    table.ajax.reload();
+});
+
+function uploadIntroVideo(video) {
+    $(".progress").fadeIn('slow');
+    $.ajax({
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                    $(".progress-bar").width(percentComplete + '%');
+                    $(".progress-bar").html(percentComplete + '%');
+                }
+            }, false);
+            return xhr;
+        },
+        type: video.getAttribute('method'),
+        url: video.getAttribute('action'),
+        data: new FormData(video),
+        contentType: false,
+        dataType: 'json',
+        cache: false,
+        processData: false,
+        beforeSend: function() {
+            $(".progress-bar").width('0%');
+        },
+        error: function() {
+            notify("Error : ", "Something is not going good. Try again.", "danger");
+        },
+        success: function(result) {
+            swal({
+                    title: result.status ? "Success" : "Error",
+                    text: result.message,
+                    type: result.status ? "success" : "error",
+                    confirmButtonClass: "btn btn-outline-danger",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: true
+                },
+                function() {
+                    if (result.redirect)
+                        window.location = $("#base_url").val() + result.redirect;
+                    else
+                        return true;
+                });
+        }
+    });
+}
