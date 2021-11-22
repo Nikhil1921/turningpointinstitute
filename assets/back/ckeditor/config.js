@@ -7,7 +7,9 @@ CKEDITOR.editorConfig = function(config) {
     // Define changes to default configuration here. For example:
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
-    // config.addContentsCss = 'font.css';
-    // config.extraPlugins = 'font';
-    // config.font_names = 'gujarati/gujarati;' + config.font_names;
+    /* config.extraPlugins = 'font';
+    config.font_names = 'Hindi Saral-1;'; */
+    /* config.extraPlugins = 'pastefromgdocs'; */
+    config.addContentsCss = 'fonts.css';
+    config.font_names = 'Hindi Saral-1;Gujrati Saral-1;' + config.font_names;
 };

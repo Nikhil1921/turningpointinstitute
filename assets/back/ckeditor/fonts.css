@@ -1,9 +1,9 @@
 @font-face {
-    font-family: Gujrati-Saral-1;
-    src: local("gujarati"), url("../css/fonts/Gujrati-Saral-1.ttf") format("truetype");
+    font-family: 'Hindi Saral-1';
+    src: local("Hindi Saral-1"), url("../css/fonts/hsaral-1.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: hsaral-1;
-    src: local("hindi"), url("../css/fonts/hsaral-1.ttf") format("truetype");
+    font-family: 'Gujrati Saral-1';
+    src: local("Gujrati Saral-1"), url("../css/fonts/Gujrati-Saral-1.ttf") format("truetype");
 }
