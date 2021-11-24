@@ -273,7 +273,8 @@
 		<script src="<?= b_asset('datatables.net-responsive/js/dataTables.responsive.min.js') ?>"></script>
 		<script src="<?= b_asset('datatables.net-buttons/js/buttons.colVis.js') ?>"></script>
 		<script src="<?= b_asset('datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') ?>"></script>
-		<script src="<?= b_asset('js/datatable-custom.js?v=1.0.1') ?>"></script>
+		<script src="<?= b_asset('pages/data-table/extensions/row-reorder/js/dataTables.rowReorder.min.js') ?>"></script>
+		<script src="<?= b_asset('js/datatable-custom.js?v=1.0.2') ?>"></script>
 		<?php endif ?>
 		<script src="<?= b_asset('js/bootstrap-growl.min.js') ?>"></script>
 		<script src="<?= b_asset('pages/notification/notification.js') ?>"></script>

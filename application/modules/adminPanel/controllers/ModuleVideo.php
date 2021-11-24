@@ -281,6 +281,27 @@ class ModuleVideo extends Admin_Controller {
         }
     }
 
+    public function sort()
+    {
+        check_ajax();
+
+        foreach ($this->input->post('sort') as $k => $v)
+            $id = $this->main->update(['id' => d_id($v['id'])], ['position' => $v['position'], 'admin_id' => $this->auth], $this->table);
+        
+        if ($id)
+            $response = [
+                'message'  => "$this->title updated.",
+                'status'   => true
+            ];
+        else
+            $response = [
+                'message'  => "$this->title not updated. Try again.",
+                'status'   => false
+            ];
+
+        die(json_encode($response));
+    }
+
     /* public function pdfUpload()
     {
         $this->load->library('upload');
