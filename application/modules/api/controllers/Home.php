@@ -319,6 +319,11 @@ class Home extends Public_controller  {
 		verifyRequiredParams(['module_id']);
 
 		if ($row = $this->api->video_list()) {
+			$html = "<!DOCTYPE html><html><head><link rel='stylesheet' type='text/css' href='".base_url()."assets/back/ckeditor/fonts.css'></head><body>";
+			foreach ($row as $k => $v) {
+				$row[$k]['hindi_pdf'] = $html.$row[$k]['hindi_pdf'].'</body></html>';
+				$row[$k]['guj_pdf'] = $html.$row[$k]['guj_pdf'].'</body></html>';
+			}
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Video list successfull.";
