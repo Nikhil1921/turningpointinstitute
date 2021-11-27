@@ -29,7 +29,7 @@ class Api_modal extends Public_model
 
 	public function video_list()
 	{
-		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, hindi_pdf, guj_pdf, video_no")
+		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, CONCAT('".base_url($this->video)."', image) image, hindi_pdf, guj_pdf, video_no")
 						->from('module_video')
 						->where(['is_deleted' => 0, 'module_id' => $this->input->get('module_id')])
 						->order_by('id ASC')
