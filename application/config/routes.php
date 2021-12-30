@@ -4,6 +4,9 @@ $route['default_controller'] = 'home';
 $route['404_override'] = 'home/error_404';
 $route['translate_uri_dashes'] = TRUE;
 
+$route['pdf/(:num)/(:any)'] = 'home/pdf/$1/$2';
+
+
 $route[ADMIN.'/forgot-password'] = ADMIN.'/login/forgot_password';
 $route[ADMIN.'/checkOtp'] = ADMIN.'/login/checkOtp';
 $route[ADMIN.'/changePassword'] = ADMIN.'/login/changePassword';

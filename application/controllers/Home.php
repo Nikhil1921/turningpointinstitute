@@ -11,6 +11,13 @@ class Home extends Public_controller  {
 	{
 		return $this->template->load('template', 'word_game');
 	}
+	
+	public function pdf(int $id, string $pdf)
+	{
+		$data['data'] = $this->main->get('module_video', $pdf." pdf", ['id' => $id]);
+		
+		return $this->load->view('pdf', $data);
+	}
 
 	public function error_404()
 	{
