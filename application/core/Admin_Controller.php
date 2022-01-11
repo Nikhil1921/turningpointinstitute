@@ -18,12 +18,12 @@ class Admin_Controller extends MY_Controller
 		$this->user = $this->main->get('users', '*', ['id' => $this->auth]);
 	}
 
-    protected function uploadImage($upload)
+    protected function uploadImage($upload, $allowed='jpg|jpeg|png')
     {
         $this->load->library('upload');
         $config = [
                 'upload_path'      => $this->path,
-                'allowed_types'    => 'jpg|jpeg|png',
+                'allowed_types'    => $allowed,
                 'file_name'        => time(),
                 'file_ext_tolower' => TRUE
             ];
@@ -79,6 +79,19 @@ class Admin_Controller extends MY_Controller
         $data['follows'] = $this->student_model->followup_list($id);
 
         return $this->load->view("freeStudents/followup_list", $data);
+    }
+
+    public function analytics($id)
+    {
+        check_ajax();
+
+        $data['name'] = $this->name;
+        $data['title'] = $this->title;
+        $data['operation'] = 'view';
+        $data['url'] = $this->redirect;
+        $data['analytics'] = $this->main->getall('user_analysis', 'page_name, date_time', ['u_id', d_id($id)]);
+
+        return $this->load->view("freeStudents/analytics", $data);
     }
 
 	public function error_404()

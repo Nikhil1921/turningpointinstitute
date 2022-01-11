@@ -64,6 +64,39 @@ class Home extends Admin_Controller {
         }
 	}
 
+	public function multi_words()
+	{
+        if (!$this->input->is_ajax_request()) {
+            $data['name'] = 'multi-words';
+            $data['title'] = 'multiple words';
+            $data['url'] = $this->redirect;
+            $data['data'] = $this->main->get('multi_words', 'words', []);
+            if (!$data['data']) {
+                $this->main->add(['words' => ''], 'multi_words');
+                $data['data'] = $this->main->get('multi_words', 'words', []);
+            }
+            return $this->template->load('template', 'multi_words', $data);
+        }else{
+            $post = [
+                'words' => $this->input->post('words')
+            ];
+            
+            if ($this->main->update([], $post, 'multi_words'))
+                $response = [
+                    'message' => "Multiple words updated successfully.",
+                    'status' => true
+                ];
+            else
+                $response = [
+                    'message' => "Multiple words not updated. Try again.",
+                    'status' => false
+                ];
+                
+            die(json_encode($response));
+        }
+        
+	}
+
     public function logout()
     {
         $this->session->sess_destroy();

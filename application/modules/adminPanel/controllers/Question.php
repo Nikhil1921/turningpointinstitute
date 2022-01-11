@@ -11,12 +11,64 @@ class Question extends Admin_Controller {
 
 	public function index()
 	{
+        /* $connect = mysqli_connect("localhost", "root", "", 'tpenglish_turningapp');
+        $modules = $this->main->getall('modules', 'id', []);
+        echo "<pre>";
+        $i=0;
+        foreach ($modules as $module) {
+            $videos = $this->main->getall('module_video', 'id', ['module_id' => $module['id']]);
+            foreach ($videos as $video) {
+                $sql = "SELECT * FROM mcq_tbl WHERE test_id = ".$video['id'];
+	            $run = mysqli_query($connect, $sql);
+                
+                while ($data = mysqli_fetch_assoc($run)) {
+                    $answer = [];
+                    $answer[] = $data['mcq_ans1'];
+                    if ($data['mcq_ans2'] != '')
+                        $answer[] = $data['mcq_ans2'];
+                    if ($data['mcq_ans3'] != '')
+                        $answer[] = $data['mcq_ans3'];
+
+                    switch ($data['type']) {
+                        case 'block':
+                        case 'Block':
+                            $type = 'Blocks';
+                            break;
+                        case 'voice':
+                        case 'Voice':
+                            $type = 'Speaking';
+                            break;
+                        case 'write':
+                        case 'Write':
+                            $type = 'Writing';
+                            break;
+                        
+                        default:
+                            $type = 'Blocks';
+                            break;
+                    }
+                    $post = [
+                        'question' => $data['mcq_que'],
+                        'question_hindi' => $data['mcq_que1'],
+                        'video_id' => $video['id'],
+                        'module_id' => $module['id'],
+                        'answer' => json_encode($answer),
+                        'test_type' => $type,
+                        'admin_id' => $this->auth,
+                    ];
+                    $this->main->add($post, 'questions');
+                }
+            }
+        } */
         check_view_access($this->name);
 		$data['name'] = $this->name;
 		$data['title'] = $this->title;
 		$data['url'] = $this->redirect;
         $data['dataTable'] = TRUE;
-
+        $where = ['is_deleted' => 0];
+        if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
+        $data['modules'] = $this->main->getall('modules', 'id, title', $where);
+        
 		return $this->template->load('template', "$this->redirect/home", $data);
 	}
 
@@ -33,8 +85,11 @@ class Question extends Admin_Controller {
         {
             $sub_array = [];
             $sub_array[] = $sr;
-            $sub_array[] = '<span class="'.($row->language == 'Hindi' ? 'hindi-class' : 'gujarati-class').'">'.$row->question.'</span>';
-            $sub_array[] = $row->answer;
+            $sub_array[] = $row->title;
+            $sub_array[] = '<span class="gujarati-class" style="white-space: break-spaces;">'.$row->question.'</span>';
+            $sub_array[] = '<span class="hindi-class" style="white-space: break-spaces;">'.$row->question_hindi.'</span>';
+            $sub_array[] = json_decode(str_replace('","', '<br/ >', $row->answer));
+            $sub_array[] = $row->test_type;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
@@ -92,10 +147,11 @@ class Question extends Admin_Controller {
                 $post = [
                     'admin_id'  => $this->auth,
                     'question'  => $this->input->post('question'),
+                    'question_hindi'  => $this->input->post('question_hindi'),
                     'module_id' => d_id($this->input->post('module_id')),
                     'video_id'  => d_id($this->input->post('video_id')),
                     'options'   => $this->input->post('options'),
-                    'language'  => $this->input->post('language'),
+                    /* 'language'  => $this->input->post('language'), */
                     'test_type' => $this->input->post('test_type'),
                     'answer'    => json_encode($this->input->post('answer'))
                 ];
@@ -124,7 +180,7 @@ class Question extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'question, module_id, video_id, options, language, test_type, answer', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'question, module_id, video_id, options, language, test_type, answer, question_hindi', ['id' => d_id($id)]);
             $where = ['is_deleted' => 0];
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
@@ -140,10 +196,11 @@ class Question extends Admin_Controller {
             else{
                 $post = [
                     'question'  => $this->input->post('question'),
+                    'question_hindi'  => $this->input->post('question_hindi'),
                     'module_id' => d_id($this->input->post('module_id')),
                     'video_id'  => d_id($this->input->post('video_id')),
                     'options'   => $this->input->post('options'),
-                    'language'  => $this->input->post('language'),
+                    /* 'language'  => $this->input->post('language'), */
                     'test_type' => $this->input->post('test_type'),
                     'answer'    => json_encode($this->input->post('answer'))
                 ];
@@ -270,7 +327,15 @@ class Question extends Admin_Controller {
         ],
         [
             'field' => 'question',
-            'label' => 'Question',
+            'label' => 'Question Gujarati',
+            'rules' => 'required',
+            'errors' => [
+                'required' => "%s is Required"
+            ]
+        ],
+        [
+            'field' => 'question',
+            'label' => 'question_hindi',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
@@ -289,14 +354,14 @@ class Question extends Admin_Controller {
             'label' => 'Options',
             'rules' => 'callback_options_check'
         ], */
-        [
+        /* [
             'field' => 'language',
             'label' => 'Language',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
             ],
-        ],
+        ], */
         [
             'field' => 'test_type',
             'label' => 'Test type',

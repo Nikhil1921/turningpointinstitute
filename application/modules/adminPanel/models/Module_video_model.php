@@ -6,16 +6,17 @@
 class Module_video_model extends Admin_model
 {
 	public $table = "module_video v";
-	public $select_column = ['v.id', 'm.title module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', 'v.is_free'];
+	public $select_column = ['v.id', 'm.title module', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', 'v.is_free', 'v.video_no', 'v.position'];
 	public $search_column = ['v.id', 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf'];
-    public $order_column = [null, 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', null];
-	public $order = ['v.position' => 'ASC'];
+    public $order_column = ['cast(v.video_no as unsigned)', 'm.title', 'v.title', 'v.details', 'v.hindi_pdf', 'v.guj_pdf', null];
+	public $order = ['cast(v.video_no as unsigned)' => 'ASC'];
 
 	public function make_query()
 	{  
 		$this->db->select($this->select_column)
             	 ->from($this->table)
 				 ->where('v.is_deleted', 0)
+				 ->where('v.module_id', d_id($this->input->post('module_id_select')))
 				 ->join('modules m', 'm.id = v.module_id');
 		/* if (auth()->role != 'Super Admin')
 			$this->db->where('v.admin_id', $this->auth); */
@@ -28,6 +29,7 @@ class Module_video_model extends Admin_model
 		$this->db->select('v.id')
 				 ->from($this->table)
 				 ->where('v.is_deleted', 0)
+				 ->where('v.module_id', d_id($this->input->post('module_id_select')))
 				 ->join('modules m', 'm.id = v.module_id');
 		/* if (auth()->role != 'Super Admin')
 			$this->db->where('v.admin_id', $this->auth); */

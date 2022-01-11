@@ -39,6 +39,9 @@ class FreeStudents extends Admin_Controller {
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             $action .= form_button(['content' => '<i class="fa fa-eye" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/followup_list/'.e_id($row->id)),
                         'data-title' => "Followup history", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+            
+            $action .= form_button(['content' => '<i class="fa fa-bar-chart"></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/analytics/'.e_id($row->id)),
+                        'data-title' => "Analytics", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
 
             if (auth()->role == 'Super Admin')
                 $action .= form_button(['content' => '<i class="fa fa-user" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/assign/'.e_id($row->id)),

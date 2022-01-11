@@ -66,19 +66,21 @@ class Api_modal extends Public_model
 						->result_array();
 	}
 
-	public function question_list()
+	public function question_list($api)
 	{
-		return array_map(function($arr){
+		return array_map(function($arr) use ($api) {
 			return [
 						'id' => $arr['id'],
 						'question' => $arr['question'],
+						'question_hindi' => $arr['question_hindi'],
+						'que_attempt' => $this->check("que_user", ['que_id' => $arr['id'], 'u_id' => $api], 'que_id') ? true : false,
 						'answer' => json_decode($arr['answer'])
 					];
-		}, $this->db->select("id, question, answer")
-						->from('questions')
-						->where(['is_deleted' => 0, 'language' => $this->input->get('language'), 'video_id' => $this->input->get('video_id'), 'test_type' => $this->input->get('test_type')])
-						->get()
-						->result_array());
+		}, $this->db->select("q.id, q.question, q.answer, q.question_hindi")
+					->from('questions q')
+					->where(['is_deleted' => 0, 'video_id' => $this->input->get('video_id'), 'test_type' => $this->input->get('test_type')])
+					->get()
+					->result_array());
 	}
 
 	public function free_video_list()
@@ -89,5 +91,24 @@ class Api_modal extends Public_model
 						->order_by('id ASC')
 						->get()
 						->result_array();
+	}
+
+	public function question_answer($api)
+	{
+		$post = [
+			'que_id' => $this->input->post('que_id'),
+			'u_id' => $api
+		];
+
+		$check = $this->check("que_user", $post, 'que_id');
+		
+		if($check)
+			$id = $this->main->update($post, ['result' => $this->input->post('result')], 'que_user');
+		else{
+			$post['result'] = $this->input->post('result');
+			$id = $this->main->add($post, 'que_user');
+		}
+
+		return $id;
 	}
 }

@@ -50,6 +50,7 @@ var table = $('.datatable').DataTable({
         data: function(data) {
             data.status = $("#status").val();
             data.staff_id = $("#staff_id").val();
+            data.module_id_select = $("#module_id_select").val();
         },
         complete: function(response) {},
     },
@@ -65,6 +66,7 @@ table.on('row-reorder', function(e, diff, edit) {
 
     for (var i = 0, ien = diff.length; i < ien; i++)
         result.push({ id: $(table.row(diff[i].node).data()[4]).attr('id'), position: diff[i].newData });
+
     if (result.length > 0) {
         $.ajax({
             url: dataTableUrl + '/sort',
@@ -73,6 +75,7 @@ table.on('row-reorder', function(e, diff, edit) {
             dataType: "JSON",
             success: function(result) {
                 notify(result.status ? " Success : " : " Error : ", result.message, result.status ? "success" : "danger");
+                table.ajax.reload();
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 notify("Error : ", "Something is not going good. Try again.", "danger");
@@ -80,3 +83,9 @@ table.on('row-reorder', function(e, diff, edit) {
         });
     }
 });
+
+if ($("#module_id_select").length > 0) {
+    $("#module_id_select").change(() => {
+        table.ajax.reload();
+    });
+}

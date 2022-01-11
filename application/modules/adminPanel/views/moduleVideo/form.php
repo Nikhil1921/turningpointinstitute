@@ -34,10 +34,28 @@
             ]) ?>
 		</div>
 	</div>
+	<div class="col-md-6">
+		<div class="form-group">
+			<?= form_label('Video', 'video') ?>
+			<?= form_input('video', isset($data['video']) ? $data['video'] : '', 'class="form-control" id="video" maxlength="50"') ?>
+		</div>
+	</div>
 	<div class="col-md-12">
 		<div class="form-group">
 			<?= form_label('Details', 'details') ?>
 			<?= form_textarea('details', isset($data['details']) ? $data['details'] : '', 'class="form-control" id="details"') ?>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Hindi Assignment', 'hindi_pdf') ?>
+			<?= form_textarea('hindi_pdf', isset($data['hindi_pdf']) ? $data['hindi_pdf'] : '', 'class="form-control ckeditor" id="hindi_pdf"') ?>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<?= form_label('Gujarati Assignment', 'guj_pdf') ?>
+			<?= form_textarea('guj_pdf', isset($data['guj_pdf']) ? $data['guj_pdf'] : '', 'class="form-control ckeditor" id="guj_pdf"') ?>
 		</div>
 	</div>
 	<div class="col-md-12">

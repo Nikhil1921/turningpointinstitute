@@ -5,7 +5,7 @@
 			<h5 class="title">Update <?= $title ?></h5>
 		</div>
 		<div class="card-body">
-			<?= form_open_multipart("$url/update/$id") ?>
+			<?= form_open_multipart("$url/update/$id", '', ['image' => $data['description']]) ?>
             <?php $this->load->view("$url/form"); ?>
 		</div>
 	</div>

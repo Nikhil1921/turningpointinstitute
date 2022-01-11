@@ -356,10 +356,10 @@ class Home extends Public_controller  {
 	{
 		get();
 		$api = authenticate($this->table);
-		verifyRequiredParams(['language', 'video_id', 'test_type']);
+		verifyRequiredParams(['video_id', 'test_type']);
 
-		if ($row = $this->api->question_list()) {
-
+		if ($row['question'] = $this->api->question_list($api)) {
+			$row['repeat'] = explode(',', $this->main->check('multi_words', [], 'words'));
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Question list successfull.";
@@ -367,6 +367,46 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Question list not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
+	public function question_answer()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['que_id', 'result']);
+
+		if ($this->api->question_answer($api)) {
+			$response["valid"] = true;
+            $response['message'] = "Answer save successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Answer save not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
+	public function user_analysis()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['page_name']);
+		
+		$post = [
+			'page_name'   => $this->input->post('page_name'),
+			'u_id'	      => $api,
+			'date_time'   => time()
+		];
+
+		if ($this->api->add($post, 'user_analysis')) {
+			$response["valid"] = true;
+            $response['message'] = "Data save successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Data save not successfull. Try again.";
             echoResponse(200, $response);
 		}
 	}

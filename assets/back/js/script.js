@@ -221,10 +221,11 @@ function toggleFullScreen() {
 
 var form = '';
 
-function getModalData(anchor) {
+function getModalData(anchor, sendData = null) {
     $.ajax({
         url: anchor.getAttribute('data-url'),
         type: 'GET',
+        data: sendData ? $("#" + sendData).serialize() : '',
         dataType: 'html',
         beforeSend: function() {
             $('.theme-loader').fadeIn();

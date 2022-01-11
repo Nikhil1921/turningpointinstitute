@@ -6,6 +6,7 @@ class Book extends Admin_Controller {
     protected $title = 'Book';
 	protected $table = 'books';
     protected $name = 'book';
+    protected $path = 'uploads/ebooks/';
 
 	public function index()
 	{
@@ -88,24 +89,33 @@ class Book extends Admin_Controller {
                 'status' => false
             ];
             else{
-                $post = [
-                    'description'  => $this->input->post('description'),
-                    'ch_id'        => d_id($this->input->post('ch_id')),
-                    'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
-                    'language'     => $this->input->post('language')
-                ];
-                
-                if ($this->main->add($post, $this->table))
-                $response = [
-                    'message' => "$this->title added.",
-                    'status' => true
-                ];
-                else
+                $img = $this->uploadImage('image', 'pdf');
+                if ($img['error'])
                     $response = [
-                        'message' => "$this->title not added. Try again.",
-                        'status' => false
+                            'message' => $img['message'],
+                            'status' => false
+                        ];
+                else{
+                    $post = [
+                        'description'  => $img['message'],
+                        'ch_id'        => d_id($this->input->post('ch_id')),
+                        'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
+                        'language'     => $this->input->post('language')
                     ];
+                    
+                    if ($this->main->add($post, $this->table))
+                    $response = [
+                        'message' => "$this->title added.",
+                        'status' => true
+                    ];
+                    else
+                        $response = [
+                            'message' => "$this->title not added. Try again.",
+                            'status' => false
+                        ];
+                }
             }
+
             die(json_encode($response));
         }
     }
@@ -132,8 +142,22 @@ class Book extends Admin_Controller {
                     'status' => false
                 ];
             else{
+                if (!empty($_FILES['image']['name'])) {
+                    $img = $this->uploadImage('image', 'pdf');
+                    if ($img['error']){
+                        $response = [
+                                'message' => $img['message'],
+                                'status' => false
+                            ];
+
+                        die(json_encode($response));
+                    }
+                    else
+                        $img['message'] = $this->input->post('image');    
+                }
+                $img['message'] = $this->input->post('image');
                 $post = [
-                    'description'  => $this->input->post('description'),
+                    'description'  => $img['message'],
                     'ch_id'        => d_id($this->input->post('ch_id')),
                     'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
                     'language'     => $this->input->post('language')
@@ -150,6 +174,7 @@ class Book extends Admin_Controller {
                         'status' => false
                     ];
             }
+
             die(json_encode($response));
         }
     }
@@ -204,13 +229,13 @@ class Book extends Admin_Controller {
                 'required' => "%s is Required"
             ]
         ], */
-        [
+        /* [
             'field' => 'description',
             'label' => 'Description',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ]
+        ] */
     ];
 }

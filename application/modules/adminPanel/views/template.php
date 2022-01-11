@@ -119,6 +119,9 @@
 												<?= anchor(admin('profile'), '<i class="feather icon-user"></i> Profile') ?>
 											</li>
 											<li>
+												<?= anchor(admin('multi-words'), '<i class="feather icon-file"></i> Multiple Words') ?>
+											</li>
+											<li>
 												<?= anchor(admin('logout'), '<i class="feather icon-log-out"></i> Logout', 'onclick="script.logout(); return false;" id="logout"') ?>
 											</li>
 										</ul>
@@ -274,10 +277,11 @@
 		<script src="<?= b_asset('datatables.net-buttons/js/buttons.colVis.js') ?>"></script>
 		<script src="<?= b_asset('datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') ?>"></script>
 		<script src="<?= b_asset('pages/data-table/extensions/row-reorder/js/dataTables.rowReorder.min.js') ?>"></script>
-		<script src="<?= b_asset('js/datatable-custom.js?v=1.0.2') ?>"></script>
+		<script src="<?= b_asset('js/datatable-custom.js?v=1.0.3') ?>"></script>
 		<?php endif ?>
 		<script src="<?= b_asset('js/bootstrap-growl.min.js') ?>"></script>
 		<script src="<?= b_asset('pages/notification/notification.js') ?>"></script>
+		<script src="<?= b_asset('bootstrap-tagsinput/bootstrap-tagsinput.js') ?>"></script>
 		<!-- sweet alert js -->
 		<script src="<?= b_asset('js/sweetalert.js') ?>"></script>
 		<!-- Switch component js -->
@@ -292,6 +296,6 @@
 		<script src="<?= b_asset('js/pcoded.min.js') ?>"></script>
 		<script src="<?= b_asset('js/vartical-layout.min.js') ?>"></script>
 		<script src="<?= b_asset('js/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
-		<script src="<?= b_asset('js/script.js?v='.time()) ?>"></script>
+		<script src="<?= b_asset('js/script.js?v=1.0.3') ?>"></script>
 	</body>
 </html>

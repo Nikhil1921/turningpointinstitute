@@ -15,6 +15,7 @@ class ModuleVideo extends Admin_Controller {
 		$data['title'] = $this->title;
 		$data['url'] = $this->redirect;
         $data['dataTable'] = TRUE;
+        $data['modules'] = $this->main->getall('modules', 'id, title', ['is_deleted' => 0]);
 
 		return $this->template->load('template', "$this->redirect/home", $data);
 	}
@@ -32,7 +33,7 @@ class ModuleVideo extends Admin_Controller {
         foreach($fetch_data as $row)
         {
             $sub_array = [];
-            $sub_array[] = $sr;
+            $sub_array[] = $row->video_no;
             $sub_array[] = $row->module;
             $sub_array[] = $row->title;
             $sub_array[] = $row->details;
@@ -47,8 +48,8 @@ class ModuleVideo extends Admin_Controller {
             
             $action = '<div style="display: inline-flex;" class="icon-btn">';
             
-            $action .= form_button(['content' => '<i class="fa fa-video-camera" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/view/'.e_id($row->id)),
-            'data-title' => "View video", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
+            /* $action .= form_button(['content' => '<i class="fa fa-video-camera" ></i>', 'type'  => 'button', 'data-url' => base_url($this->redirect.'/view/'.e_id($row->id)),
+            'data-title' => "View video", 'onclick' => "getModalData(this)", 'class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']); */
             
             if ($update)
                 $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-pencil" ></i>', ['class' => 'btn btn-primary btn-outline-primary btn-icon mr-2']);
@@ -80,12 +81,12 @@ class ModuleVideo extends Admin_Controller {
         die(json_encode($output));
     }
 
-    public function view($id)
+    /* public function view($id)
     {
         check_ajax();
         $data['data'] = $this->main->get($this->table, 'CONCAT("'.$this->path.'", video) video', ['id' => d_id($id)]);
         return $this->load->view("$this->redirect/view", $data);
-    }
+    } */
     
     public function add()
     {
@@ -121,6 +122,7 @@ class ModuleVideo extends Admin_Controller {
                         'title'      => $this->input->post('title'),
                         'details'    => $this->input->post('details'),
                         'video_no'   => $this->input->post('video_no'),
+                        'video'      => $this->input->post('video'),
                         'image'      => $image['message'],
                         'admin_id'   => $this->auth
                     ];
@@ -143,7 +145,7 @@ class ModuleVideo extends Admin_Controller {
         }
     }
 
-    public function upload_video($id)
+    /* public function upload_video($id)
     {
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
@@ -183,7 +185,7 @@ class ModuleVideo extends Admin_Controller {
 
             die(json_encode($response));
         }
-    }
+    } */
     
     public function update($id)
     {
@@ -193,7 +195,7 @@ class ModuleVideo extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id, image, video_no', ['id' => d_id($id)]);
+            $data['data'] = $this->main->get($this->table, 'title, details, video, module_id, image, video_no, hindi_pdf, guj_pdf', ['id' => d_id($id)]);
             $where = ['is_deleted' => 0];
             if (auth()->role != 'Super Admin') $where['admin_id'] = $this->auth;
             $data['modules'] = $this->main->getall('modules', 'id, title', $where);
@@ -217,7 +219,7 @@ class ModuleVideo extends Admin_Controller {
                         if ($this->input->post('image') && file_exists($this->path.$this->input->post('image'))) 
                             unlink($this->path.$this->input->post('image'));
                 }else
-                    $image['message'] = $this->input->post('video');
+                    $image['message'] = $this->input->post('image');
                 
                 $post = [
                         'module_id'  => d_id($this->input->post('module_id')),
@@ -225,13 +227,16 @@ class ModuleVideo extends Admin_Controller {
                         'details'    => $this->input->post('details'),
                         'image'      => $image['message'],
                         'video_no'   => $this->input->post('video_no'),
+                        'video'      => $this->input->post('video'),
+                        'hindi_pdf'  => $this->input->post('hindi_pdf'),
+                        'guj_pdf'    => $this->input->post('guj_pdf'),
                         'admin_id'   => $this->auth
                     ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
                     $response = [
                         'message'  => "$this->title updated.",
-                        'redirect'  => "$this->name/upload-video/$id",
+                        // 'redirect'  => "$this->name/upload-assignments/$id",
                         'status'   => true
                     ];
                 else
@@ -245,7 +250,7 @@ class ModuleVideo extends Admin_Controller {
         }
     }
 
-    public function upload_assignments($id)
+    /* public function upload_assignments($id)
     {
         if ($this->input->server('REQUEST_METHOD') === 'GET') {
             $data['name'] = $this->name;
@@ -279,14 +284,14 @@ class ModuleVideo extends Admin_Controller {
 
             die(json_encode($response));
         }
-    }
+    } */
 
     public function sort()
     {
         check_ajax();
 
         foreach ($this->input->post('sort') as $k => $v)
-            $id = $this->main->update(['id' => d_id($v['id'])], ['position' => $v['position'], 'admin_id' => $this->auth], $this->table);
+            $id = $this->main->update(['id' => d_id($v['id'])], ['video_no' => $v['position'], 'admin_id' => $this->auth], $this->table);
         
         if ($id)
             $response = [
@@ -419,6 +424,14 @@ class ModuleVideo extends Admin_Controller {
             'field' => 'module_id',
             'label' => 'Module',
             'rules' => 'required|numeric',
+            'errors' => [
+                'required' => "%s is Required"
+            ]
+        ],
+        [
+            'field' => 'video',
+            'label' => 'Video',
+            'rules' => 'required|max_length[50]',
             'errors' => [
                 'required' => "%s is Required"
             ]
