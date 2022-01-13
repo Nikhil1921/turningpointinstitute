@@ -29,7 +29,7 @@ class Api_modal extends Public_model
 
 	public function video_list()
 	{
-		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, CONCAT('".base_url($this->video)."', image) image, hindi_pdf, guj_pdf, video_no")
+		return $this->db->select("id, title, details, video, CONCAT('".base_url($this->video)."', image) image, hindi_pdf, guj_pdf, video_no")
 						->from('module_video')
 						->where(['is_deleted' => 0, 'module_id' => $this->input->get('module_id')])
 						->order_by('id ASC')
@@ -85,7 +85,7 @@ class Api_modal extends Public_model
 
 	public function free_video_list()
 	{
-		return $this->db->select("id, title, details, CONCAT('".base_url($this->video)."', video) video, CONCAT('".base_url($this->video)."', image) image, hindi_pdf, guj_pdf, video_no")
+		return $this->db->select("id, title, details, video, CONCAT('".base_url($this->video)."', image) image, hindi_pdf, guj_pdf, video_no")
 						->from('module_video')
 						->where(['is_deleted' => 0, 'is_free' => 1])
 						->order_by('id ASC')
@@ -96,7 +96,9 @@ class Api_modal extends Public_model
 	public function question_answer($api)
 	{
 		$post = [
-			'que_id' => $this->input->post('que_id'),
+			'que_id'   => $this->input->post('que_id'),
+			'video_id' => $this->input->post('video_id'),
+			'reset'	   => 0,
 			'u_id' => $api
 		];
 
@@ -108,6 +110,21 @@ class Api_modal extends Public_model
 			$post['result'] = $this->input->post('result');
 			$id = $this->main->add($post, 'que_user');
 		}
+
+		return $id;
+	}
+	
+	public function view_video($api)
+	{
+		$post = [
+			'video_id' => $this->input->post('video_id'),
+			'u_id' => $api
+		];
+
+		$check = $this->check("view_video", $post, 'video_id');
+		$id = 1;
+		if(! $check)
+			$id = $this->main->add($post, 'view_video');
 
 		return $id;
 	}

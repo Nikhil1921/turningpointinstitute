@@ -375,7 +375,7 @@ class Home extends Public_controller  {
 	{
 		post();
 		$api = authenticate($this->table);
-		verifyRequiredParams(['que_id', 'result']);
+		verifyRequiredParams(['que_id', 'result', 'video_id']);
 
 		if ($this->api->question_answer($api)) {
 			$response["valid"] = true;
@@ -384,6 +384,46 @@ class Home extends Public_controller  {
 		}else{
 			$response["valid"] = false;
             $response['message'] = "Answer save not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
+	public function question_reset()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['video_id']);
+		
+		$post = [
+			'video_id' => $this->input->post('video_id'),
+			'reset'	   => 0,
+			'u_id' 	   => $api
+		];
+
+		if ($this->api->update($post, ['reset' => 1], 'que_user')) {
+			$response["valid"] = true;
+            $response['message'] = "Reset successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Reset not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
+	public function view_video()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['video_id']);
+
+		if ($this->api->view_video($api)) {
+			$response["valid"] = true;
+            $response['message'] = "View video successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "View video not successfull. Try again.";
             echoResponse(200, $response);
 		}
 	}
