@@ -44,7 +44,7 @@ class Login extends CI_Controller {
     	    $this->form_validation->set_rules($this->login);
             if ($this->form_validation->run() == FALSE)
                 $response = [
-                    'message' => "Some required fields are missing.",
+                    'message' => "Invalid mobile or password.",
                     'status' => false
                 ];
             else{
@@ -94,7 +94,7 @@ class Login extends CI_Controller {
             $this->form_validation->set_rules($forgot);
             if ($this->form_validation->run() == FALSE)
                 $response = [
-                    'message' => "Some required fields are missing.",
+                    'message' => "Mobile No. is required on not valid.",
                     'status' => false
                 ];
             else{
@@ -121,7 +121,7 @@ class Login extends CI_Controller {
                         ];
                 }else{
                     $response = [
-                        'message' => 'Mobile OR Email not registered.',
+                        'message' => 'Mobile no. OR Email not registered.',
                         'status' => false
                     ];
                 }

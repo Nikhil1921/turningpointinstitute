@@ -11,7 +11,7 @@
 			<?= form_input('mobile', set_value('mobile'), [
 			'class' => "form-control",
 			'required' => "",
-			'placeholder' => "Your Mobile OR Email"
+			'placeholder' => "Mobile No. OR Email"
 			]); ?>
 		</div>
 		<div class="row m-t-30">

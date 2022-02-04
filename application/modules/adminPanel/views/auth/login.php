@@ -12,17 +12,23 @@
 			'class' => "form-control",
 			'required' => "",
 			'maxlength' => 10,
-			'placeholder' => "Your Mobile"
+			'placeholder' => "Mobile No."
 			]); ?>
 		</div>
-		<div class="form-group form-primary">
+		<div class="form-group form-primary input-group">
 			<?= form_input([
 			'name' => 'password',
 			'class' => "form-control",
 			'type' => "password",
-			'required' => "",
-			'placeholder' => "Your Password"
+			'id' => "password",
+			// 'required' => "",
+			'placeholder' => "Password"
 			]); ?>
+			<div class="input-group-prepend">
+				<span class="input-group-text" onclick="var pass = document.getElementById('password');
+				pass.type = (pass.type == 'text') ? 'password' : 'text'">
+				<i class="icofont icofont-eye"></i></span>
+			</div>
 		</div>
 		<div class="row m-t-25 text-left">
 			<div class="col-md-12">
