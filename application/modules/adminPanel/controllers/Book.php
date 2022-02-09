@@ -33,7 +33,7 @@ class Book extends Admin_Controller {
             $sub_array = [];
             $sub_array[] = $sr;
             $sub_array[] = $row->chapter;
-            $sub_array[] = $row->sub_chapter ? $row->sub_chapter : "NA";
+            /* $sub_array[] = $row->sub_chapter ? $row->sub_chapter : "NA"; */
             $sub_array[] = $row->language;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';

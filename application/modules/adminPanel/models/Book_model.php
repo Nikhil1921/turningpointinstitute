@@ -8,7 +8,7 @@ class Book_model extends Admin_model
 	public $table = "books b";
 	public $select_column = ['b.id', 'c.title chapter', 'sc.title sub_chapter', 'b.language'];
 	public $search_column = ['b.id', 'c.title', 'sc.title', 'b.language'];
-    public $order_column = [null, 'c.title', 'sc.title', 'b.language', null];
+    public $order_column = [null, 'c.title', 'b.language', null];
 	public $order = ['b.id' => 'DESC'];
 
 	public function make_query()

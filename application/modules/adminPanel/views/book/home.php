@@ -19,7 +19,7 @@
 					<thead>
 						<th class="target">Sr.</th>
 						<th>Chapter</th>
-						<th>Sub Chapter</th>
+						<!-- <th>Sub Chapter</th> -->
 						<th>Language</th>
 						<th class="target">Action</th>
 					</thead>

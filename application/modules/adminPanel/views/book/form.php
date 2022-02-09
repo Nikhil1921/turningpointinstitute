@@ -3,7 +3,8 @@
 	<div class="col-md-6">
 		<div class="form-group">
             <?= form_label('Chapter', 'ch_id') ?>
-			<select class="form-control" name="ch_id" id="ch_id" onchange="getSubChapters(this)" data-dependent="sub_ch_id" data-value="<?= isset($data['sub_ch_id']) ? e_id($data['sub_ch_id']) : '' ?>">
+			<select class="form-control" name="ch_id" id="ch_id">
+			<!-- <select class="form-control" name="ch_id" id="ch_id" onchange="getSubChapters(this)" data-dependent="sub_ch_id" data-value="<?= isset($data['sub_ch_id']) ? e_id($data['sub_ch_id']) : '' ?>"> -->
 			    <option value="" selected disabled>Select chapter</option>
                 <?php foreach($chapters as $chapter): ?>
 				<option value="<?= e_id($chapter['id']) ?>" <?= isset($data['ch_id']) && $data['ch_id'] == $chapter['id'] ? 'selected' : '' ?>><?= $chapter['title'] ?></option>
@@ -11,12 +12,12 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-6">
+	<!-- <div class="col-md-6">
 		<div class="form-group">
             <?= form_label('Sub Chapter', 'sub_ch_id') ?>
 			<select class="form-control" name="sub_ch_id" id="sub_ch_id"></select>
 		</div>
-	</div>
+	</div> -->
 	<div class="col-md-6">
 		<div class="form-group">
             <?= form_label('Language', 'language') ?>
@@ -26,7 +27,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-4 mt-4">
+	<div class="col-md-4 mb-4">
 		<div class="form-group">
 			<?= form_label('<i class="fa fa-book" ></i>Book', 'image', ['class' => 'btn btn-success btn-outline-success waves-effect btn-round btn-block float-right col-md-12']) ?>
             <?= form_input([
