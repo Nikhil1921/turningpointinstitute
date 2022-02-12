@@ -4,6 +4,7 @@ class Home extends Public_controller  {
 
 	public function index()
 	{
+		// 336
 		return $this->template->load('template', 'home');
 	}
 	
