@@ -114,7 +114,7 @@ class Home extends Public_controller  {
 						'ch_id' => $arr['ch_id'],
 						'books' => $this->api->get_book($ch_id, $sc_id),
 					];
-				$return['sub_ch'] = $arr['ch_id'] == 0 ? $this->api->chapter_list($arr['id']) : [];
+				// $return['sub_ch'] = $arr['ch_id'] == 0 ? $this->api->chapter_list($arr['id']) : [];
 				return $return;
 			}, $row);
 			$response["row"] = $row;

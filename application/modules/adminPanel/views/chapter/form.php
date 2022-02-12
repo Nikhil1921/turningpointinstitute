@@ -10,7 +10,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-6">
+	<!-- <div class="col-md-6">
 		<div class="form-group">
             <?= form_label('Chapter', 'ch_id') ?>
 			<select class="form-control" name="ch_id" id="ch_id">
@@ -20,7 +20,7 @@
 				<?php endforeach ?>
 			</select>
 		</div>
-	</div>
+	</div> -->
 	<div class="col-md-12">
 		<div class="form-group">
 			<?= form_label('Chapter Title', 'title') ?>

@@ -58,7 +58,7 @@ class Api_modal extends Public_model
 
 	public function get_book($ch_id, $sc_id=0)
 	{
-		$this->db->select("language, description")
+		$this->db->select("language, CONCAT('$this->ebook', description) description")
 				 ->from('books')
 				 ->where(['sub_ch_id' => $sc_id, 'is_deleted' => 0, 'ch_id' => $ch_id]);
 

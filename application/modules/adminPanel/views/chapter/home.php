@@ -26,7 +26,7 @@
 					<thead>
 						<th class="target">Sr.</th>
 						<th>Chapter</th>
-						<th>Sub chapter</th>
+						<!-- <th>Sub chapter</th> -->
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

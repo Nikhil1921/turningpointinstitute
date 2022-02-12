@@ -31,14 +31,16 @@ class Chapter extends Admin_Controller {
         {  
             $sub_array = [];
             $sub_array[] = $sr;
-            if($row->ch_id != 0)
+
+            $sub_array[] = $row->title;
+            /* if($row->ch_id != 0)
                 $sub_array[] = $this->main->check($this->table, ['id' => $row->ch_id], 'title');
             else
                 $sub_array[] = $row->title;
             if($row->ch_id != 0)
                 $sub_array[] = $row->title;
             else
-                $sub_array[] = "NA";
+                $sub_array[] = "NA"; */
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
