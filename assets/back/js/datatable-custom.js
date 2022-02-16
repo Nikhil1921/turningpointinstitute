@@ -51,6 +51,9 @@ var table = $('.datatable').DataTable({
             data.status = $("#status").val();
             data.staff_id = $("#staff_id").val();
             data.module_id_select = $("#module_id_select").val();
+            data.module_id = $("select[name=module_id]").val();
+            data.video_id = $("select[name=video_id]").val();
+            data.test_type = $("select[name=test_type]").val();
         },
         complete: function(response) {},
     },
@@ -84,8 +87,8 @@ table.on('row-reorder', function(e, diff, edit) {
     }
 });
 
-if ($("#module_id_select").length > 0) {
-    $("#module_id_select").change(() => {
+if ($("#module_id_select, .module_id_select").length > 0) {
+    $("#module_id_select, .module_id_select").change(() => {
         table.ajax.reload();
     });
 }

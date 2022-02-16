@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
-								<select class="form-control" name="module_id" onchange="getModuleVideos(this)" data-dependent="video_id_home">
+								<select class="form-control module_id_select" name="module_id" onchange="getModuleVideos(this)" data-dependent="video_id_home">
 									<option value="" selected disabled>Select module</option>
 									<?php foreach($modules as $module): ?>
 									<option value="<?= e_id($module['id']) ?>"><?= $module['title'] ?></option>
@@ -21,12 +21,12 @@
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<select class="form-control" name="video_id" id="video_id_home"></select>
+								<select class="form-control module_id_select" name="video_id" id="video_id_home"></select>
 							</div>
 						</div>
 						<!-- <div class="col-md-3">
 							<div class="form-group">
-								<select class="form-control" name="language" id="language">
+								<select class="form-control module_id_select" name="language" id="language">
 									<option value="Gujarati">Gujarati</option>
 									<option value="Hindi">Hindi</option>
 								</select>
@@ -34,7 +34,7 @@
 						</div> -->
 						<div class="col-md-4">
 							<div class="form-group">
-								<select class="form-control" name="test_type">
+								<select class="form-control module_id_select" name="test_type">
 									<option value="Blocks">Blocks</option>
 									<option value="Speaking">Speaking</option>
 									<option value="Writing">Writing</option>
