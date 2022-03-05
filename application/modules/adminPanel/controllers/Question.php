@@ -88,7 +88,8 @@ class Question extends Admin_Controller {
             $sub_array[] = $row->title;
             $sub_array[] = '<span class="gujarati-class" style="white-space: break-spaces;">'.$row->question.'</span>';
             $sub_array[] = '<span class="hindi-class" style="white-space: break-spaces;">'.$row->question_hindi.'</span>';
-            $sub_array[] = json_decode(str_replace('","', '<br/ >', $row->answer));
+            $ans = json_decode(str_replace('","', '<br/ >', $row->answer));
+            $sub_array[] = '<p id="sort_'.e_id($row->id).'">'.$ans[0].'</p>';
             $sub_array[] = $row->test_type;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
@@ -218,6 +219,27 @@ class Question extends Admin_Controller {
             }
             die(json_encode($response));
         }
+    }
+
+    public function sort()
+    {
+        check_ajax();
+
+        foreach ($this->input->post('sort') as $k => $v)
+            $id = $this->main->update(['id' => d_id(str_replace('sort_', '', $v['id']))], ['position' => $v['position'], 'admin_id' => $this->auth], $this->table);
+        
+        if ($id)
+            $response = [
+                'message'  => "$this->title updated.",
+                'status'   => true
+            ];
+        else
+            $response = [
+                'message'  => "$this->title not updated. Try again.",
+                'status'   => false
+            ];
+
+        die(json_encode($response));
     }
 
     /* public function upload()

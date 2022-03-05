@@ -92,3 +92,4 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="reorder" value="true" />

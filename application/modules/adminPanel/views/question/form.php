@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<div class="form-group">
 			<?= form_label('Question Gujarati', 'question') ?>
-			<?= form_input('question', isset($data['question']) ? $data['question'] : '', 'class="form-control Gujarati-class" id="question"') ?>
+			<?= form_input('question', isset($data['question']) ? $data['question'] : '', 'class="form-control gujarati-class" id="question"') ?>
 		</div>
 	</div>
 	<div class="col-md-12">

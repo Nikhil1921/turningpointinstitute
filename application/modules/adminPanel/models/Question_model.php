@@ -9,7 +9,7 @@ class Question_model extends Admin_model
 	public $select_column = ['q.id', 'v.title', 'q.question', 'q.question_hindi', 'q.answer', 'q.test_type'];
 	public $search_column = ['q.id', 'v.title', 'q.question', 'q.question_hindi', 'q.answer', 'q.test_type'];
     public $order_column = [null, 'v.title', 'q.question', 'q.question_hindi', null, 'q.test_type', null];
-	public $order = ['q.id' => 'DESC'];
+	public $order = ['q.position' => 'ASC'];
 
 	public function make_query()
 	{  
