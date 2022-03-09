@@ -79,6 +79,7 @@ class Api_modal extends Public_model
 		}, $this->db->select("q.id, q.question, q.answer, q.question_hindi")
 					->from('questions q')
 					->where(['is_deleted' => 0, 'video_id' => $this->input->get('video_id'), 'test_type' => $this->input->get('test_type')])
+					->order_by('q.position ASC')
 					->get()
 					->result_array());
 	}
