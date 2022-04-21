@@ -103,20 +103,22 @@ class Home extends Public_controller  {
 		get();
 		verifyRequiredParams(['book_id']);
 
-		if ($row = $this->api->chapter_list($this->input->get('ch_id'))) {
+		if ($row = $this->api->chapter_list()) {
 			$row = array_map(function($arr){
-				$ch_id = $arr['ch_id'] == 0 ? $arr['id'] : $arr['ch_id'];
-				$sc_id = $arr['ch_id'] == 0 ? $arr['ch_id'] : $arr['id'];
+				// $ch_id = $arr['ch_id'] == 0 ? $arr['id'] : $arr['ch_id'];
+				// $sc_id = $arr['ch_id'] == 0 ? $arr['ch_id'] : $arr['id'];
 				
 				$return = [
 						'id' => $arr['id'],
 						'title' => $arr['title'],
-						'ch_id' => $arr['ch_id'],
-						'books' => $this->api->get_book($ch_id, $sc_id),
+						// 'ch_id' => $arr['ch_id'],
+						'books' => $this->api->get_book($arr['id']),
 					];
 				// $return['sub_ch'] = $arr['ch_id'] == 0 ? $this->api->chapter_list($arr['id']) : [];
 				return $return;
 			}, $row);
+
+			$response["base_url"] = base_url();
 			$response["row"] = $row;
 			$response["valid"] = true;
             $response['message'] = "Chapter list successfull.";
