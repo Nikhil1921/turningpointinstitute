@@ -9,7 +9,7 @@ class Chapter_model extends Admin_model
 	public $select_column = ['c.id', 'c.title'];
 	public $search_column = ['c.id', 'c.title'];
     public $order_column = [null, 'c.title', null];
-	public $order = ['c.id' => 'DESC'];
+	public $order = ['c.id' => 'ASC'];
 
 	public function make_query()
 	{  

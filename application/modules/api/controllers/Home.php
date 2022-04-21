@@ -103,7 +103,8 @@ class Home extends Public_controller  {
 		get();
 		verifyRequiredParams(['book_id']);
 
-		if ($row = $this->api->chapter_list()) {
+		if ($row = $this->api->chapter_list($this->input->get())) {
+			/* re($row);
 			$row = array_map(function($arr){
 				// $ch_id = $arr['ch_id'] == 0 ? $arr['id'] : $arr['ch_id'];
 				// $sc_id = $arr['ch_id'] == 0 ? $arr['ch_id'] : $arr['id'];
@@ -116,7 +117,7 @@ class Home extends Public_controller  {
 					];
 				// $return['sub_ch'] = $arr['ch_id'] == 0 ? $this->api->chapter_list($arr['id']) : [];
 				return $return;
-			}, $row);
+			}, $row); */
 
 			$response["base_url"] = base_url();
 			$response["row"] = $row;

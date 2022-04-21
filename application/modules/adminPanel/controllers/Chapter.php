@@ -33,14 +33,6 @@ class Chapter extends Admin_Controller {
             $sub_array[] = $sr;
 
             $sub_array[] = $row->title;
-            /* if($row->ch_id != 0)
-                $sub_array[] = $this->main->check($this->table, ['id' => $row->ch_id], 'title');
-            else
-                $sub_array[] = $row->title;
-            if($row->ch_id != 0)
-                $sub_array[] = $row->title;
-            else
-                $sub_array[] = "NA"; */
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
@@ -83,8 +75,6 @@ class Chapter extends Admin_Controller {
             $data['title'] = $this->title;
             $data['operation'] = 'add';
             $data['url'] = $this->redirect;
-            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0]);
-            $data['ebooks'] = $this->main->getall('ebook', 'id, title', ['is_deleted' => 0]);
             
             return $this->template->load("$this->redirect/add", "$this->redirect/form", $data);
         }else{
@@ -96,9 +86,7 @@ class Chapter extends Admin_Controller {
             ];
             else{
                 $post = [
-                    'title'     => $this->input->post('title'),
-                    'ch_id'     => d_id($this->input->post('ch_id')),
-                    'ebook_id'  => d_id($this->input->post('ebook_id')),
+                    'title'     => $this->input->post('title')
                 ];
                 
                 if ($this->main->add($post, $this->table))
@@ -125,9 +113,7 @@ class Chapter extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'title, ch_id, ebook_id', ['id' => d_id($id)]);
-            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0, 'id != ' => d_id($id)]);
-            $data['ebooks'] = $this->main->getall('ebook', 'id, title', ['is_deleted' => 0]);
+            $data['data'] = $this->main->get($this->table, 'title', ['id' => d_id($id)]);
             
             return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
         }else{
@@ -139,9 +125,7 @@ class Chapter extends Admin_Controller {
                 ];
             else{
                 $post = [
-                    'title'     => $this->input->post('title'),
-                    'ch_id'     => d_id($this->input->post('ch_id')),
-                    'ebook_id'  => d_id($this->input->post('ebook_id')),
+                    'title'     => $this->input->post('title')
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))

@@ -32,9 +32,8 @@ class Book extends Admin_Controller {
         {  
             $sub_array = [];
             $sub_array[] = $sr;
+            $sub_array[] = $row->book;
             $sub_array[] = $row->chapter;
-            /* $sub_array[] = $row->sub_chapter ? $row->sub_chapter : "NA"; */
-            $sub_array[] = $row->language;
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
@@ -77,7 +76,8 @@ class Book extends Admin_Controller {
             $data['title'] = $this->title;
             $data['operation'] = 'add';
             $data['url'] = $this->redirect;
-            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0]);
+            $data['ebooks'] = $this->main->getall('ebook', 'id, title', ['is_deleted' => 0]);
+            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0]);
             
             return $this->template->load('template', "$this->redirect/add", $data);
         }else{
@@ -99,8 +99,7 @@ class Book extends Admin_Controller {
                     $post = [
                         'description'  => $img['message'],
                         'ch_id'        => d_id($this->input->post('ch_id')),
-                        'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
-                        'language'     => $this->input->post('language')
+                        'book_id'    => d_id($this->input->post('ebook_id'))
                     ];
                     
                     if ($this->main->add($post, $this->table))
@@ -128,8 +127,9 @@ class Book extends Admin_Controller {
             $data['operation'] = 'update';
             $data['url'] = $this->redirect;
             $data['id'] = $id;
-            $data['data'] = $this->main->get($this->table, 'description, ch_id, sub_ch_id, language', ['id' => d_id($id)]);
-            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0, 'ch_id' => 0]);
+            $data['ebooks'] = $this->main->getall('ebook', 'id, title', ['is_deleted' => 0]);
+            $data['data'] = $this->main->get($this->table, 'description, ch_id, book_id', ['id' => d_id($id)]);
+            $data['chapters'] = $this->main->getall('chapters', 'id, title', ['is_deleted' => 0]);
             
             return $this->template->load('template', "$this->redirect/update", $data);
             // return $this->template->load("$this->redirect/update", "$this->redirect/form", $data);
@@ -152,15 +152,14 @@ class Book extends Admin_Controller {
 
                         die(json_encode($response));
                     }
-                    else
-                        $img['message'] = $this->input->post('image');    
-                }
-                $img['message'] = $this->input->post('image');
+                    
+                }else
+                    $img['message'] = $this->input->post('image');
+                    
                 $post = [
                     'description'  => $img['message'],
                     'ch_id'        => d_id($this->input->post('ch_id')),
-                    'sub_ch_id'    => $this->input->post('sub_ch_id') ? d_id($this->input->post('sub_ch_id')) : 0,
-                    'language'     => $this->input->post('language')
+                    'book_id'      => d_id($this->input->post('ebook_id'))
                 ];
                 
                 if ($this->main->update(['id' => d_id($id)], $post, $this->table))
@@ -206,14 +205,6 @@ class Book extends Admin_Controller {
 
     protected $validate = [
         [
-            'field' => 'language',
-            'label' => 'Language',
-            'rules' => 'required',
-            'errors' => [
-                'required' => "%s is Required"
-            ]
-        ],
-        [
             'field' => 'ch_id',
             'label' => 'Chapter',
             'rules' => 'required',
@@ -221,14 +212,14 @@ class Book extends Admin_Controller {
                 'required' => "%s is Required"
             ]
         ],
-        /* [
-            'field' => 'sub_ch_id',
-            'label' => 'Sub Chapter',
+        [
+            'field' => 'ebook_id',
+            'label' => 'Ebook',
             'rules' => 'required',
             'errors' => [
                 'required' => "%s is Required"
             ]
-        ], */
+        ],
         /* [
             'field' => 'description',
             'label' => 'Description',

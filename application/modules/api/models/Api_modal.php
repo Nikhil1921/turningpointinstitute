@@ -46,7 +46,18 @@ class Api_modal extends Public_model
 						->result_array();
 	}
 
-	public function chapter_list()
+	public function chapter_list($get)
+	{
+		$this->db->select("CONCAT('$this->ebook', b.description) description, c.title AS chapter")
+				 ->from('books b')
+				 ->where(['b.is_deleted' => 0, 'b.book_id' => $get['book_id']])
+				 ->join('chapters c', 'c.id = b.ch_id');
+
+		return $this->db->get()
+						->result_array();
+	}
+
+	/* public function chapter_list()
 	{
 		$this->db->select("id, title")
 				 ->from('chapters')
@@ -64,7 +75,7 @@ class Api_modal extends Public_model
 
 		return $this->db->get()
 						->result_array();
-	}
+	} */
 
 	public function question_list($api)
 	{
