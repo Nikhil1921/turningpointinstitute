@@ -140,4 +140,16 @@ class Api_modal extends Public_model
 
 		return $id;
 	}
+
+	public function tpcloud()
+	{
+		return $this->db->select("CONCAT('".base_url($this->ebook)."', tp.image) image, IF(c.title, c.title, 'NA') AS chapter")
+						->from('tpcloud tp')
+						->where(['tp.is_deleted' => 0])
+						->where('language', $this->input->get('language'))
+						->where('cloud_type', $this->input->get('cloud_type'))
+						->join('chapters c', 'c.id = tp.ch_id', 'left')
+						->get()
+						->result_array();
+	}
 }

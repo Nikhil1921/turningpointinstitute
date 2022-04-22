@@ -453,4 +453,22 @@ class Home extends Public_controller  {
             echoResponse(200, $response);
 		}
 	}
+
+	public function tpcloud()
+	{
+		get();
+
+		verifyRequiredParams(['language', 'cloud_type']);
+		
+		if ($row = $this->api->tpcloud()) {
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "TP cloud successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "TP cloud not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
 }
