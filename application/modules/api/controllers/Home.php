@@ -11,7 +11,7 @@ class Home extends Public_controller  {
 
 	private $table = 'students';
 
-	public function send_otp()
+	/* public function send_otp()
 	{
 		post();
 		verifyRequiredParams(['mobile']);
@@ -28,8 +28,8 @@ class Home extends Public_controller  {
 		 	$id = $this->main->add($post, 'otp_check');
 		
 		if ($id) {
-			/*$sms = 'Your OTP is : '.$post['otp'];
-			send_otp($post['mobile'], $sms);*/
+			$sms = 'Your OTP is : '.$post['otp'];
+			send_otp($post['mobile'], $sms);
 			$response["valid"] = true;
             $response['message'] = "OTP send successfull.";
             echoResponse(200, $response);
@@ -66,6 +66,31 @@ class Home extends Public_controller  {
             $response['message'] = "Invalid OTP. Try again.";
             echoResponse(200, $response);
 		}
+	} */
+	
+	public function otp_check()
+	{
+		post();
+		verifyRequiredParams(['mobile']);
+
+		$post = [
+			'mobile' => $this->input->post('mobile')
+		];
+		
+		$u_id = $this->main->get($this->table, 'id, name, city, mobile, email, address, free_membership, free_used, is_registered', $post);
+		
+		if (!$u_id) {
+			$id = $this->main->add($post, $this->table);
+			$u_id = $this->main->get($this->table, 'id, name, city, mobile, email, address, free_membership, free_used, is_registered', ['id' => $id]);
+		}
+
+		$u_id['membership'] = $this->main->check('buy_membership', ['u_id' => $u_id['id'], 'expiry >=' => date('Y-m-d H:i:s')], 'expiry');
+		$u_id['membership'] = $u_id['membership'] ? true : false;
+
+		$response["row"] = $u_id;
+		$response["valid"] = true;
+		$response['message'] = "OTP check successfull.";
+		echoResponse(200, $response);
 	}
 
 	public function banner_list()
@@ -137,6 +162,7 @@ class Home extends Public_controller  {
 		$api = authenticate($this->table);
 		$row = $this->main->get($this->table, 'name, mobile, email, address, free_membership, free_used', ['id' => $api]);
 		$row['membership'] = $this->main->check('buy_membership', ['u_id' => $api, 'expiry >=' => date('Y-m-d H:i:s')], 'expiry');
+		$row['membership'] = $row['membership'] ? true : false;
 		
 		if ($row) {
 			$response["row"] = $row;
@@ -150,11 +176,34 @@ class Home extends Public_controller  {
 		}
 	}
 
+	public function register()
+	{
+		post();
+		$api = authenticate($this->table);
+		verifyRequiredParams(['name', 'city']);
+
+		$post = [
+			'name'            => $this->input->post('name'),
+			'city'            => $this->input->post('city'),
+			'is_registered'   => 1
+		];
+
+		if ($row = $this->main->update(['id' => $api], $post, $this->table)) {
+			$response["valid"] = true;
+            $response['message'] = "Registeration successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Registeration not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
 	public function update_profile()
 	{
 		post();
 		$api = authenticate($this->table);
-		verifyRequiredParams(['name', 'address', 'email', 'mobile']);
+		verifyRequiredParams(['name', 'address', 'city', 'mobile']);
 		
 		if($this->main->check($this->table, ['mobile' => $this->input->post('mobile'), 'id != ' => $api], 'id')){
 			$response["valid"] = false;
@@ -162,16 +211,16 @@ class Home extends Public_controller  {
             echoResponse(200, $response);
 		}
 		
-		if($this->main->check($this->table, ['email' => $this->input->post('email'), 'id != ' => $api], 'id')){
-			$response["valid"] = false;
-            $response['message'] = "Email already in use.";
-            echoResponse(200, $response);
-		}
+		// if($this->main->check($this->table, ['email' => $this->input->post('email'), 'id != ' => $api], 'id')){
+		// 	$response["valid"] = false;
+        //     $response['message'] = "Email already in use.";
+        //     echoResponse(200, $response);
+		// }
 		
 		$post = [
                     'name'     => $this->input->post('name'),
                     'mobile'   => $this->input->post('mobile'),
-                    'email'    => $this->input->post('email'),
+                    'city'     => $this->input->post('city'),
                     'address'  => $this->input->post('address')
                 ];
 
@@ -186,25 +235,48 @@ class Home extends Public_controller  {
 		}
 	}
 
+	public function buy_ebook_list()
+	{
+		get();
+
+		$api = authenticate($this->table);
+
+		if ($row = $this->main->getall('buy_ebook', 'mobile, name, address, pincode, city, price, del_charge, pay_id, status, book_id AS book', ['u_id' => $api])) {
+			$row = array_map(function($book){
+				$book['book'] = $this->main->check('ebook', ['id' => $book['book']], 'title');
+				return $book;
+			}, $row);
+			$response["row"] = $row;
+			$response["valid"] = true;
+            $response['message'] = "Buy ebook list successfull.";
+            echoResponse(200, $response);
+		}else{
+			$response["valid"] = false;
+            $response['message'] = "Buy ebook list not successfull. Try again.";
+            echoResponse(200, $response);
+		}
+	}
+
 	public function buy_ebook()
 	{
 		post();
 		$api = authenticate($this->table);
-		verifyRequiredParams(['name', 'address', 'pincode', 'mobile', 'city', 'book_id']);
+		verifyRequiredParams(['name', 'address', 'pincode', 'mobile', 'city', 'book_id', 'pay_id']);
 		
 		$book = $this->main->get('ebook', '(price * (100 - discount) / 100) price, del_charge', ['id' => $this->input->post('book_id')]);
 		
 		$post = [
-					'mobile'  	 => $this->input->post('mobile'),
-					'name'    	 => $this->input->post('name'),
-					'address' 	 => $this->input->post('address'),
-					'pincode' 	 => $this->input->post('pincode'),
-					'city'    	 => $this->input->post('city'),
-					'book_id' 	 => $this->input->post('book_id'),
-					'price'	  	 => $book['price'],
-					'del_charge' => $book['del_charge'],
-					'u_id'    	 => $api
-                ];
+			'mobile'  	 => $this->input->post('mobile'),
+			'name'    	 => $this->input->post('name'),
+			'address' 	 => $this->input->post('address'),
+			'pincode' 	 => $this->input->post('pincode'),
+			'city'    	 => $this->input->post('city'),
+			'pay_id' 	 => $this->input->post('pay_id'),
+			'book_id' 	 => $this->input->post('book_id'),
+			'price'	  	 => $book['price'],
+			'del_charge' => $book['del_charge'],
+			'u_id'    	 => $api
+		];
 
 		if ($row = $this->main->add($post, 'buy_ebook')) {
 			$response["valid"] = true;

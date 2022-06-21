@@ -32,8 +32,9 @@ class FreeStudents extends Admin_Controller {
             $sub_array[] = $sr;
             $sub_array[] = ucwords($row->name);
             $sub_array[] = $row->mobile;
-            $sub_array[] = $row->email;
-            $sub_array[] = $row->address;
+            /* $sub_array[] = $row->email;
+            $sub_array[] = $row->address; */
+            $sub_array[] = $row->city;
             if (auth()->role == 'Super Admin') $sub_array[] = $row->assigned ? $row->assigned : 'Not Assigned';
 
             $action = '<div style="display: inline-flex;" class="icon-btn">';

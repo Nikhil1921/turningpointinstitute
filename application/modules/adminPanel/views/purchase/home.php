@@ -18,7 +18,8 @@
 						<th>Name</th>
 						<th>Mobile</th>
 						<th>Address</th>
-						<!-- <th class="target">Action</th> -->
+						<th>Payment id</th>
+						<th class="target">Action</th>
 					</thead>
 					<tbody>
 					</tbody>

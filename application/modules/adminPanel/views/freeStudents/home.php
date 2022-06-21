@@ -11,8 +11,9 @@
 						<th class="target">Sr.</th>
 						<th>Name</th>
 						<th>Mobile</th>
-						<th>E mail</th>
-						<th>Address</th>
+						<!-- <th>E mail</th>
+						<th>Address</th> -->
+						<th>City</th>
 						<?= auth()->role == 'Super Admin' ? '<th class="target">Assigned</th>' : '' ?>
 						<th class="target">Action</th>
 					</thead>

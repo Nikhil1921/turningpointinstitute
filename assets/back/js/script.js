@@ -508,6 +508,42 @@ var script = {
                 });
             });
     },
+    status: function(id) {
+        swal({
+                title: "Are you sure?",
+                text: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn btn-outline-danger",
+                confirmButtonText: "Yes!",
+                cancelButtonText: 'No',
+                closeOnConfirm: false
+            },
+            function() {
+                let form = $("#" + id);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'post',
+                    data: form.serialize(),
+                    dataType: 'json',
+                    cache: false,
+                    async: false,
+                    beforeSend: function() {
+                        $('.theme-loader').fadeIn();
+                    },
+                    complete: function() {
+                        $('.theme-loader').fadeOut();
+                    },
+                    success: function(result) {
+                        table.ajax.reload();
+                        swal(`${(result.status) ? "Success" : "Error"}`, result.message, result.status ? "success" : "error");
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        notify("Error : ", "Something is not going good. Try again.", "danger");
+                    }
+                });
+            });
+    },
     freeVideo: function(id) {
         swal({
                 title: "Are you sure?",

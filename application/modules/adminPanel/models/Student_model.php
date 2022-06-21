@@ -6,9 +6,9 @@
 class Student_model extends Admin_model
 {
 	public $table = "students s";
-	public $select_column = ['s.id', 's.name', 's.mobile', 's.email', 's.address', 'free_membership', 'assign_id', 'u.name assigned'];
-	public $search_column = ['s.name', 's.mobile', 's.email', 's.address'];
-    public $order_column = [null, 's.name', 's.mobile', 's.email', 's.address', null];
+	public $select_column = ['s.id', 's.name', 's.mobile', 's.city', 'free_membership', 'assign_id', 'u.name assigned'];
+	public $search_column = ['s.name', 's.mobile', 's.city'];
+    public $order_column = [null, 's.name', 's.mobile', 's.city', null];
 	public $order = ['s.id' => 'DESC'];
 
 	public function make_query()
@@ -57,7 +57,7 @@ class Student_model extends Admin_model
 
 		$this->db->trans_start();
 		$this->db->insert("follow_ups", $post);
-		if ($post['status'] != 'Follow Up')
+		if ($post['status'] != 'Membership taken')
 			$this->db->where(['id' => d_id($id)])->update("students", ['registered' => 1]);
 
 		return $this->db->trans_complete();

@@ -27,9 +27,10 @@
 						<th class="target">Sr.</th>
 						<th>Name</th>
 						<th>Mobile</th>
-						<th>E mail</th>
-						<th>Address</th>
-						<th class="target">Free Membership</th>
+						<!-- <th>E mail</th>
+						<th>Address</th> -->
+						<th>City</th>
+						<th class="target">Membership</th>
 						<th class="target">Action</th>
 					</thead>
 					<tbody>

@@ -33,10 +33,14 @@ class Student extends Admin_Controller {
             $sub_array[] = $sr;
             $sub_array[] = ucwords($row->name);
             $sub_array[] = $row->mobile;
-            $sub_array[] = $row->email;
-            $sub_array[] = $row->address;
-            $sub_array[] = $row->free_membership ? date('d-m-Y', strtotime($row->free_membership)) : "NA";
+            /* $sub_array[] = $row->email;
+            $sub_array[] = $row->address; */
+            $sub_array[] = $row->city;
+            // $sub_array[] = $row->free_membership ? date('d-m-Y', strtotime($row->free_membership)) : "NA";
 
+            $membership = $this->main->get('buy_membership', 'pay_type, expiry', ['u_id' => $row->id, 'expiry >=' => date('Y-m-d H:i:s')]);
+		    
+            $sub_array[] = $membership ? $membership['pay_type']." : Expired on : ".date('d-m-Y', strtotime($membership['expiry'])) : "Expired";
             $action = '<div style="display: inline-flex;" class="icon-btn">';
 
             if ($update)
